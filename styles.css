@@ -194,35 +194,45 @@ select{cursor:pointer}
 .modal.show{display:block}
 .modal-wrap{max-width:520px;margin:8vh auto;padding:14px}
 
-/* ===== HERO SLIDER ===== */
+/* ===== HERO SLIDER (FIXED FOR VERTICAL IMAGES) ===== */
 .hero-media{
   border-radius: var(--radius);
   overflow: hidden;
   border: 1px solid var(--border);
-  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+  background: #0b0f14;
   box-shadow: var(--shadow);
   position: relative;
-  min-height: 360px;
+
+  /* ✅ Best for your portrait images */
+  height: 650px;
+  max-height: 80vh;
 }
 
-.slider{ position:absolute; inset:0; }
+/* Center content */
+.slider{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* ✅ No crop */
 .slide{
-  position:absolute; inset:0;
-  width:100%; height:100%;
-  object-fit:cover;
+  position:absolute;
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
+
   opacity:0;
-  transform: scale(1.03);
-  transition: opacity .9s ease, transform 1.4s ease;
+  transition: opacity .8s ease;
 }
-.slide.active{
-  opacity:1;
-  transform: scale(1);
-}
+.slide.active{ opacity:1; }
 
 .hero-badge{
   position:absolute; top:14px; left:14px;
   padding:8px 10px; border-radius:14px;
-  background:rgba(0,0,0,.35);
+  background:rgba(0,0,0,.55);
   border:1px solid var(--border);
   color:var(--text);
   font-weight:800; font-size:13px;
@@ -231,7 +241,7 @@ select{cursor:pointer}
 .hero-caption{
   position:absolute; bottom:14px; left:14px; right:14px;
   padding:12px 12px; border-radius:16px;
-  background:rgba(0,0,0,.35);
+  background:rgba(0,0,0,.55);
   border:1px solid var(--border);
   color:var(--muted);
   font-weight:700; font-size:13px;
@@ -245,7 +255,7 @@ select{cursor:pointer}
   width:42px; height:42px;
   border-radius:14px;
   border:1px solid var(--border);
-  background:rgba(0,0,0,.35);
+  background:rgba(0,0,0,.45);
   color:var(--text);
   font-size:26px;
   cursor:pointer;
@@ -253,14 +263,14 @@ select{cursor:pointer}
   display:flex; align-items:center; justify-content:center;
   backdrop-filter: blur(10px);
 }
-.slider-btn:hover{ background:rgba(0,0,0,.5); }
+.slider-btn:hover{ background:rgba(0,0,0,.7); }
 .slider-btn.prev{ left:12px; }
 .slider-btn.next{ right:12px; }
 
 .slider-dots{
   position:absolute; left:50%;
   transform: translateX(-50%);
-  bottom:62px;
+  bottom:70px;
   display:flex; gap:8px;
   z-index:7;
 }
@@ -274,12 +284,16 @@ select{cursor:pointer}
   background: linear-gradient(135deg, var(--brand), var(--brand2));
 }
 
+/* ✅ Responsive Fix */
 @media (max-width: 980px){
   .hero{grid-template-columns: 1fr; padding-top:26px}
+  .hero-media{ height: 520px; }
   .grid{grid-template-columns: repeat(2,1fr)}
   .two-col{grid-template-columns: 1fr}
 }
+
 @media (max-width: 520px){
+  .hero-media{ height: 420px; }
   .grid{grid-template-columns: 1fr}
   .h1{font-size:36px}
   .nav-links{display:none}
