@@ -8,19 +8,19 @@
 </head>
 <body>
 
-  <div class="nav">
+  <header class="nav">
     <div class="container nav-inner">
       <a class="brand" href="index.html">
-        <!-- ✅ Logo Added -->
         <img src="logo.png" alt="CycleFlex Logo" class="site-logo">
         <span>CycleFlex</span>
+        <span class="badge">Cycling Shorts</span>
       </a>
 
-      <div class="nav-links">
+      <nav class="nav-links">
         <a href="products.html">Shop</a>
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
-      </div>
+      </nav>
 
       <div class="nav-actions">
         <a class="btn" href="products.html">Continue Shopping</a>
@@ -29,18 +29,18 @@
         </a>
       </div>
     </div>
-  </div>
+  </header>
 
-  <div class="container">
-    <div class="section-title">
+  <main class="container">
+    <section class="section-title">
       <div>
         <h2>Your Cart</h2>
         <p class="muted">Checkout via WhatsApp — fastest and easiest.</p>
       </div>
-      <button class="btn" id="clearCartBtn">Clear Cart</button>
-    </div>
+      <button class="btn" id="clearCartBtn" type="button">Clear Cart</button>
+    </section>
 
-    <div class="two-col">
+    <section class="two-col">
       <div class="panel">
         <div id="cartList"></div>
       </div>
@@ -53,26 +53,32 @@
         <div class="line"></div>
 
         <div class="muted">Customer Details</div>
-        <div style="display:grid; gap:10px; margin-top:10px">
+        <div class="form-grid">
           <input class="input" id="c_name" placeholder="Full Name"/>
           <input class="input" id="c_phone" placeholder="Phone Number"/>
           <input class="input" id="c_address" placeholder="Full Address"/>
-          <input class="input" id="c_note" placeholder="Note (optional) e.g., preferred color"/>
+          <input class="input" id="c_note" placeholder="Note (optional) e.g., preferred color/size"/>
         </div>
 
         <div style="margin-top:14px">
-          <button class="btn primary" style="width:100%; justify-content:center" id="checkoutBtn">
+          <button class="btn primary full" id="checkoutBtn" type="button">
             Place Order on WhatsApp
           </button>
         </div>
 
         <div class="small" style="margin-top:10px">
-          After clicking, WhatsApp opens with your order details. You can confirm payment & delivery there.
+          After clicking, WhatsApp opens with your cart + total + delivery address. Confirm payment & delivery there.
+        </div>
+
+        <div class="line"></div>
+        <div class="muted">
+          <b>Store WhatsApp:</b> 9629928542<br/>
+          <b>Pickup / Office:</b> 366/1 G.D Road Kolappalur, Gobichettipalayam, Erode, Tamil Nadu - 638456
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="footer">
+    <footer class="footer">
       <div class="row">
         <div>© <span id="year"></span> CycleFlex</div>
         <div class="row" style="gap:14px">
@@ -80,12 +86,10 @@
           <a href="contact.html">Support</a>
         </div>
       </div>
-    </div>
-  </div>
+    </footer>
+  </main>
 
   <script src="app.js"></script>
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </body>
 </html>
