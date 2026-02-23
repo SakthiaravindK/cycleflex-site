@@ -8,19 +8,19 @@
 </head>
 <body>
 
-  <div class="nav">
+  <header class="nav">
     <div class="container nav-inner">
       <a class="brand" href="index.html">
-        <!-- ✅ Logo Added -->
         <img src="logo.png" alt="CycleFlex Logo" class="site-logo">
         <span>CycleFlex</span>
+        <span class="badge">Cycling Shorts</span>
       </a>
 
-      <div class="nav-links">
+      <nav class="nav-links">
         <a href="products.html">Shop</a>
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
-      </div>
+      </nav>
 
       <div class="nav-actions">
         <a class="btn" href="checkout.html">
@@ -29,17 +29,18 @@
         <a class="btn primary" href="checkout.html">Checkout</a>
       </div>
     </div>
-  </div>
+  </header>
 
-  <div class="container">
-    <div class="section-title">
+  <main class="container">
+    <section class="section-title">
       <div>
         <h2>Shop Cycling Shorts</h2>
         <p id="resultCount" class="muted">Products</p>
       </div>
-    </div>
+      <a class="btn" href="index.html">← Back</a>
+    </section>
 
-    <div class="filters">
+    <section class="filters">
       <input class="input" id="searchInput" placeholder="Search (pocket, seamless, endurance...)"/>
       <select id="categorySelect">
         <option value="All">All</option>
@@ -51,25 +52,24 @@
         <option value="price_low">Price: Low to High</option>
         <option value="price_high">Price: High to Low</option>
       </select>
-      <a class="btn" href="index.html">← Back</a>
-    </div>
+    </section>
 
-    <div class="grid" id="productsGrid"></div>
+    <section class="grid" id="productsGrid"></section>
 
-    <div class="footer">
+    <footer class="footer">
       <div class="row">
-        <div>Need bulk orders? Message on WhatsApp from checkout.</div>
+        <div>Need bulk orders? Checkout page will open WhatsApp with cart details.</div>
         <div class="row" style="gap:14px">
           <a href="checkout.html">Cart</a>
           <a href="contact.html">Contact</a>
         </div>
       </div>
-    </div>
-  </div>
+    </footer>
+  </main>
 
   <!-- Modal -->
-  <div id="modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); backdrop-filter:blur(8px); z-index:999;">
-    <div style="max-width:520px; margin:8vh auto; padding:14px;">
+  <div id="modal" class="modal">
+    <div class="modal-wrap">
       <div class="card">
         <div class="card-body" id="modalBody"></div>
       </div>
