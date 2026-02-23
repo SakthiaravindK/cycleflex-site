@@ -7,10 +7,10 @@
   <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
+
   <div class="nav">
     <div class="container nav-inner">
       <a class="brand" href="index.html">
-        <!-- ✅ Logo Added -->
         <img src="logo.png" alt="CycleFlex Logo" class="site-logo">
         <span>CycleFlex</span>
       </a>
@@ -22,25 +22,35 @@
       </div>
 
       <div class="nav-actions">
-        <a class="btn" href="checkout.html">Cart <span class="badge" data-cart-badge>0</span></a>
+        <a class="btn" href="checkout.html">
+          Cart <span class="badge" data-cart-badge>0</span>
+        </a>
         <a class="btn primary" href="products.html">Shop</a>
       </div>
     </div>
   </div>
 
   <div class="container">
+
+    <!-- Title -->
     <div class="section-title">
       <div>
         <h2>About CycleFlex</h2>
-        <p class="muted">We stitch cycling shorts for comfort, performance, and daily use.</p>
+        <p class="muted">
+          Premium cycling shorts designed for comfort, durability, and performance.
+        </p>
       </div>
     </div>
 
+    <!-- Our Story -->
     <div class="panel">
-      <h3 style="margin-top:0">Our Promise</h3>
-      <p class="muted">
-        We focus on durable stitching, breathable fabric, and reliable fits.
-        Whether you're training, commuting, or doing gym workouts — our shorts stay comfortable.
+      <h3 style="margin-top:0">Our Story</h3>
+      <p class="muted" style="line-height:1.7">
+        CycleFlex was started in Tamil Nadu with one clear mission:
+        to provide high-quality cycling shorts that are comfortable,
+        durable, and suitable for Indian weather conditions.
+        Whether you're cycling long distances, commuting daily,
+        or doing gym workouts — our shorts are built to support you.
       </p>
 
       <div class="line"></div>
@@ -48,38 +58,111 @@
       <div class="grid" style="grid-template-columns:repeat(3,1fr)">
         <div class="card">
           <div class="card-body">
-            <h3>Quality Stitching</h3>
-            <div class="muted">Reinforced seams for daily rides.</div>
+            <h3>Strong Stitching</h3>
+            <div class="muted">
+              Reinforced seams that last through daily wear and workouts.
+            </div>
           </div>
         </div>
 
         <div class="card">
           <div class="card-body">
             <h3>Comfort Fit</h3>
-            <div class="muted">Compression support + soft waistband.</div>
+            <div class="muted">
+              Compression support with soft waistband for long rides.
+            </div>
           </div>
         </div>
 
         <div class="card">
           <div class="card-body">
             <h3>Made for India</h3>
-            <div class="muted">Sizes & styles designed for real customers.</div>
+            <div class="muted">
+              Designed specifically for Indian customers and climate.
+            </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Materials & Features -->
+    <div class="panel" style="margin-top:16px">
+      <h3 style="margin-top:0">Materials & Features</h3>
+      <div class="line"></div>
+
+      <div class="muted" style="line-height:1.8">
+        • Breathable stretch fabric for flexibility<br/>
+        • Anti-chafe stitching for smooth comfort<br/>
+        • Side pockets (selected models)<br/>
+        • High-waist and compression support options<br/>
+        • Durable elastic waistband<br/>
+      </div>
+    </div>
+
+    <!-- Contact & Location -->
+    <div class="panel" style="margin-top:16px">
+      <h3 style="margin-top:0">Contact & Location</h3>
+      <div class="line"></div>
+
+      <div class="muted" style="line-height:1.8">
+        <b>WhatsApp:</b> +91 96299 28542<br/>
+        <b>Address:</b><br/>
+        366/1 G.D Road,<br/>
+        Kolappalur,<br/>
+        Gobichettipalayam,<br/>
+        Erode, Tamil Nadu – 638456<br/>
+        India
+      </div>
+
+      <div style="margin-top:16px">
+        <a class="btn primary"
+           href="https://wa.me/919629928542"
+           target="_blank"
+           style="justify-content:center">
+           Message Us on WhatsApp
+        </a>
+      </div>
+    </div>
+
+    <!-- Shipping & Support -->
+    <div class="two-col" style="margin-top:16px">
+      <div class="panel">
+        <h3 style="margin-top:0">Shipping</h3>
+        <div class="muted" style="line-height:1.7">
+          • Shipping across Tamil Nadu and India<br/>
+          • Orders confirmed via WhatsApp<br/>
+          • Bulk orders available on request
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3 style="margin-top:0">Support</h3>
+        <div class="muted" style="line-height:1.7">
+          Need help with size or bulk order?<br/>
+          Message us directly on WhatsApp and we’ll guide you.
+        </div>
+        <div style="margin-top:12px">
+          <a class="btn" href="contact.html">Contact Page</a>
+          <a class="btn primary" href="products.html">Shop Now</a>
         </div>
       </div>
     </div>
 
     <div class="footer">
       <div class="row">
-        <div>Want to sell on Amazon too? This website can still help build your brand.</div>
+        <div>© <span id="year"></span> CycleFlex • Built for Comfort & Performance</div>
         <div class="row" style="gap:14px">
-          <a href="contact.html">Contact</a>
           <a href="products.html">Shop</a>
+          <a href="contact.html">Contact</a>
         </div>
       </div>
     </div>
+
   </div>
 
   <script src="app.js"></script>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
