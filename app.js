@@ -16,7 +16,54 @@ const PRODUCTS = [
 ];
 
 const STORAGE_KEY = "cycleflex_cart_v1";
+// CHATBOT FUNCTIONALITY
+const openBtn = document.getElementById("cfChatOpen");
+const closeBtn = document.getElementById("cfChatClose");
+const win = document.getElementById("cfChatWindow");
+const body = document.getElementById("cfChatBody");
+const form = document.getElementById("cfChatForm");
+const input = document.getElementById("cfChatInput");
+const waBtn = document.getElementById("cfChatWA");
 
+function addMsg(text, who){
+  const div = document.createElement("div");
+  div.className = "cf-msg " + who;
+  div.textContent = text;
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+}
+
+function botReply(text){
+  const t = text.toLowerCase();
+  if(t.includes("price")){
+    addMsg("Our shorts start from ₹699 to ₹899 depending on model.", "bot");
+  } else if(t.includes("size")){
+    addMsg("Sizes available from S to XXL. Share your waist size.", "bot");
+  } else if(t.includes("order")){
+    addMsg("Add product to cart and click Checkout → WhatsApp.", "bot");
+  } else if(t.includes("delivery")){
+    addMsg("Delivery usually takes 3-5 days.", "bot");
+  } else {
+    addMsg("Hi 👋 How can I help you today?", "bot");
+  }
+}
+
+openBtn.onclick = () => win.classList.add("show");
+closeBtn.onclick = () => win.classList.remove("show");
+
+form.addEventListener("submit", e=>{
+  e.preventDefault();
+  const text = input.value.trim();
+  if(!text) return;
+  addMsg(text,"user");
+  input.value="";
+  setTimeout(()=>botReply(text),300);
+});
+
+waBtn.onclick = ()=>{
+  const url = "https://wa.me/919629928542?text=Hello%20CycleFlex%20I%20need%20help";
+  window.open(url,"_blank");
+};
 // ============================
 // HELPERS
 // ============================
@@ -431,3 +478,4 @@ document.addEventListener("DOMContentLoaded", () => {
   setupContactWhatsApp();
   setupHeroSlider();
 });
+
