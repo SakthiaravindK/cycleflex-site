@@ -1,110 +1,396 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>CycleFlex • Premium Cycling Shorts</title>
-  <link rel="stylesheet" href="styles.css"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VELOX — Cycling Shorts</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-  <div class="nav">
-    <div class="container nav-inner">
-      <a class="brand" href="index.html">
-        <img src="logo.png" alt="CycleFlex Logo" class="site-logo">
-        <span>CycleFlex</span>
-        <span class="badge">Cycling Shorts</span>
+  <!-- Top Bar -->
+  <div class="topbar">
+    <p>Free shipping over ₹1,999 • 7-day returns • COD available</p>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-row">
+      <a class="logo" href="#">
+        <span class="logo-mark">V</span>
+        <span class="logo-text">VELOX</span>
       </a>
 
-      <div class="nav-links">
-        <a href="products.html">Shop</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
+      <nav class="nav" id="nav">
+        <a href="#shop">Shop</a>
+        <a href="#features">Features</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="icon-btn" id="themeBtn" aria-label="Toggle theme">🌙</button>
+        <button class="icon-btn" id="openCartBtn" aria-label="Open cart">
+          🛒 <span class="badge" id="cartCount">0</span>
+        </button>
+        <button class="burger" id="burgerBtn" aria-label="Open menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <h1>Ride longer. Feel lighter.</h1>
+        <p>
+          Premium cycling shorts engineered for comfort: breathable fabric, anti-chafe seams,
+          and high-density chamois support.
+        </p>
+
+        <div class="hero-cta">
+          <a class="btn primary" href="#shop">Shop Cycling Shorts</a>
+          <a class="btn ghost" href="#features">See Features</a>
+        </div>
+
+        <div class="trust-row">
+          <div class="trust-item">
+            <span class="trust-icon">✅</span>
+            <div>
+              <strong>Anti-chafe</strong>
+              <small>Flatlock seams</small>
+            </div>
+          </div>
+          <div class="trust-item">
+            <span class="trust-icon">🌬️</span>
+            <div>
+              <strong>Breathable</strong>
+              <small>Moisture wicking</small>
+            </div>
+          </div>
+          <div class="trust-item">
+            <span class="trust-icon">🧼</span>
+            <div>
+              <strong>Easy care</strong>
+              <small>Machine washable</small>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="nav-actions">
-        <a class="btn" href="checkout.html">
-          Cart <span class="badge" data-cart-badge>0</span>
-        </a>
-        <a class="btn primary" href="products.html">Shop Now</a>
+      <div class="hero-media">
+        <div class="hero-card">
+          <img src="assets/hero.jpg" alt="Cycling shorts hero image"/>
+          <div class="hero-card-overlay">
+            <span class="pill">Best Seller</span>
+            <span class="price-tag">From ₹999</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Shop -->
+  <section class="section" id="shop">
+    <div class="container">
+      <div class="section-head">
+        <h2>Cycling Shorts Collection</h2>
+        <p>Choose the fit that matches your ride style.</p>
+      </div>
+
+      <div class="toolbar">
+        <div class="searchbox">
+          <input id="searchInput" type="search" placeholder="Search shorts (e.g., gel, bib, compression)"/>
+        </div>
+
+        <div class="filters">
+          <select id="sortSelect" aria-label="Sort products">
+            <option value="featured">Sort: Featured</option>
+            <option value="priceLow">Price: Low to High</option>
+            <option value="priceHigh">Price: High to Low</option>
+            <option value="ratingHigh">Rating: High to Low</option>
+          </select>
+
+          <select id="tagSelect" aria-label="Filter by type">
+            <option value="all">Filter: All</option>
+            <option value="bib">Bib</option>
+            <option value="gel">Gel</option>
+            <option value="compression">Compression</option>
+            <option value="lightweight">Lightweight</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid" id="productGrid"></div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section alt" id="features">
+    <div class="container">
+      <div class="section-head">
+        <h2>Built for performance</h2>
+        <p>Small details that make long rides feel easy.</p>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h3>High-density chamois</h3>
+          <p>Designed for endurance comfort and stable support.</p>
+        </div>
+        <div class="feature-card">
+          <h3>4-way stretch fabric</h3>
+          <p>Moves with you, reduces fatigue, stays snug.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Breathable panels</h3>
+          <p>Moisture-wicking build keeps you cool and dry.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Reflective accents</h3>
+          <p>Better visibility for early morning and evening rides.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reviews -->
+  <section class="section" id="reviews">
+    <div class="container">
+      <div class="section-head">
+        <h2>Rider reviews</h2>
+        <p>Real feedback from weekend riders to daily commuters.</p>
+      </div>
+
+      <div class="review-grid">
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p>“No more saddle soreness. The padding is perfect for 2–3 hour rides.”</p>
+          <div class="by">— Arjun, Chennai</div>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p>“Excellent fit. Doesn’t roll up. Fabric feels premium.”</p>
+          <div class="by">— Nithya, Coimbatore</div>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★☆</div>
+          <p>“Great value. Wish I bought two earlier.”</p>
+          <div class="by">— Santhosh, Bengaluru</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section alt" id="faq">
+    <div class="container">
+      <div class="section-head">
+        <h2>FAQ</h2>
+        <p>Quick answers before you order.</p>
+      </div>
+
+      <div class="faq">
+        <details>
+          <summary>How do I choose the right size?</summary>
+          <p>Use your waist measurement. If you're between sizes, choose the larger size for comfort.</p>
+        </details>
+        <details>
+          <summary>Do you have COD and returns?</summary>
+          <p>Yes. COD is available and returns are supported within 7 days (unused condition).</p>
+        </details>
+        <details>
+          <summary>Are these good for long rides?</summary>
+          <p>Our endurance styles include high-density padding and anti-chafe seams for long rides.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="logo footer-logo">
+          <span class="logo-mark">V</span>
+          <span class="logo-text">VELOX</span>
+        </div>
+        <p class="muted">Premium cycling essentials made for comfort.</p>
+      </div>
+
+      <div>
+        <h4>Shop</h4>
+        <a href="#shop">Cycling Shorts</a>
+        <a href="#features">Features</a>
+        <a href="#reviews">Reviews</a>
+      </div>
+
+      <div>
+        <h4>Support</h4>
+        <a href="#faq">FAQ</a>
+        <a href="#">Shipping</a>
+        <a href="#">Returns</a>
+      </div>
+
+      <div>
+        <h4>Newsletter</h4>
+        <p class="muted">Get launch offers and drops.</p>
+        <form id="newsletterForm" class="newsletter">
+          <input type="email" id="newsletterEmail" placeholder="Email address" required />
+          <button class="btn primary" type="submit">Join</button>
+        </form>
+        <small class="muted" id="newsletterMsg"></small>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <small class="muted">© <span id="year"></span> VELOX. All rights reserved.</small>
+    </div>
+  </footer>
+
+  <!-- Product Modal -->
+  <div class="modal" id="productModal" aria-hidden="true">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal-card" role="dialog" aria-modal="true">
+      <button class="close" id="closeModalBtn" aria-label="Close">✕</button>
+
+      <div class="modal-grid">
+        <div class="modal-media">
+          <img id="modalImg" src="" alt="Product image"/>
+        </div>
+        <div class="modal-info">
+          <h3 id="modalTitle"></h3>
+          <div class="modal-meta">
+            <span class="stars" id="modalRating"></span>
+            <span class="muted" id="modalTag"></span>
+          </div>
+          <p class="muted" id="modalDesc"></p>
+
+          <div class="price-row">
+            <div class="price" id="modalPrice"></div>
+            <div class="muted small" id="modalStock"></div>
+          </div>
+
+          <div class="size-row">
+            <label class="label">Size</label>
+            <div class="sizes" id="sizeButtons"></div>
+          </div>
+
+          <div class="qty-row">
+            <label class="label" for="qtyInput">Qty</label>
+            <div class="qty">
+              <button class="qty-btn" id="qtyMinus">−</button>
+              <input id="qtyInput" type="number" min="1" value="1"/>
+              <button class="qty-btn" id="qtyPlus">+</button>
+            </div>
+          </div>
+
+          <button class="btn primary full" id="addToCartBtn">Add to Cart</button>
+
+          <div class="info-badges">
+            <span class="pill soft">7-day returns</span>
+            <span class="pill soft">Secure checkout</span>
+            <span class="pill soft">Fast shipping</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="container">
-    <div class="hero">
-
-      <!-- LEFT -->
-      <div class="hero-card">
-        <div class="kicker">Performance • Comfort • Style</div>
-        <div class="h1">Cycling shorts that feel like a second skin.</div>
-        <div class="sub">
-          Premium stretch fabric, anti-chafe stitching, and pockets on selected designs.
-          Built for daily rides and serious training.
-        </div>
-
-        <div class="hero-cta">
-          <a class="btn primary" href="products.html">Explore Collection</a>
-          <a class="btn" href="checkout.html">View Cart</a>
-        </div>
-
-        <div class="pills">
-          <div class="pill">✅ Men & Women</div>
-          <div class="pill">✅ Sizes S–XXL</div>
-          <div class="pill">✅ WhatsApp Order</div>
-        </div>
+  <!-- Cart Drawer -->
+  <aside class="drawer" id="cartDrawer" aria-hidden="true">
+    <div class="drawer-backdrop" id="drawerBackdrop"></div>
+    <div class="drawer-panel">
+      <div class="drawer-head">
+        <h3>Your Cart</h3>
+        <button class="close" id="closeCartBtn" aria-label="Close">✕</button>
       </div>
 
-      <!-- RIGHT (PRO SLIDER) -->
-      <div class="hero-media" id="heroSlider">
-        <div class="hero-badge">New Drop</div>
+      <div class="drawer-body" id="cartItems"></div>
 
-        <div class="slider">
-          <img class="slide active" src="images/slide1.png" alt="CycleFlex slide 1">
-          <img class="slide" src="images/slide2.png" alt="CycleFlex slide 2">
-          <img class="slide" src="images/slide3.png" alt="CycleFlex slide 3">
-          <img class="slide" src="images/slide4.png" alt="CycleFlex slide 4">
-          <img class="slide" src="images/slide5.png" alt="CycleFlex slide 5">
+      <div class="drawer-foot">
+        <div class="coupon">
+          <input id="couponInput" type="text" placeholder="Coupon (try RIDE10)"/>
+          <button class="btn ghost" id="applyCouponBtn">Apply</button>
+        </div>
+        <div class="totals">
+          <div class="row">
+            <span class="muted">Subtotal</span>
+            <strong id="subtotalText">₹0</strong>
+          </div>
+          <div class="row">
+            <span class="muted">Discount</span>
+            <strong id="discountText">₹0</strong>
+          </div>
+          <div class="row big">
+            <span>Total</span>
+            <strong id="totalText">₹0</strong>
+          </div>
         </div>
 
-        <!-- arrows -->
-        <button class="slider-btn prev" aria-label="Previous slide" type="button">‹</button>
-        <button class="slider-btn next" aria-label="Next slide" type="button">›</button>
-
-        <!-- dots -->
-        <div class="slider-dots" aria-label="Slider dots"></div>
-
-        <div class="hero-caption">
-          Premium quality • Breathable • Quick Dry • Comfort Fit
-        </div>
+        <button class="btn primary full" id="checkoutBtn">Checkout</button>
+        <small class="muted">Taxes included where applicable.</small>
       </div>
     </div>
+  </aside>
 
-    <div class="section-title">
-      <div>
-        <h2>Featured Picks</h2>
-        <p>Top-selling cycling shorts — quick add to cart and checkout via WhatsApp.</p>
-      </div>
-      <a class="btn" href="products.html">View All</a>
-    </div>
+  <!-- Checkout Modal -->
+  <div class="modal" id="checkoutModal" aria-hidden="true">
+    <div class="modal-backdrop" id="checkoutBackdrop"></div>
+    <div class="modal-card" role="dialog" aria-modal="true">
+      <button class="close" id="closeCheckoutBtn" aria-label="Close">✕</button>
+      <h3>Checkout</h3>
+      <p class="muted">This is a demo checkout form (no payment processing).</p>
 
-    <div class="grid" id="featuredGrid"></div>
-
-    <div class="footer">
-      <div class="row">
-        <div>© <span id="year"></span> CycleFlex. All rights reserved.</div>
-        <div class="row" style="gap:14px">
-          <a href="about.html">About</a>
-          <a href="contact.html">Contact</a>
-          <a href="products.html">Shop</a>
+      <form id="checkoutForm" class="checkout">
+        <div class="two">
+          <div>
+            <label class="label">Full name</label>
+            <input required id="name" type="text" placeholder="Your name"/>
+          </div>
+          <div>
+            <label class="label">Phone</label>
+            <input required id="phone" type="tel" placeholder="10-digit phone"/>
+          </div>
         </div>
-      </div>
+
+        <div>
+          <label class="label">Email</label>
+          <input required id="email" type="email" placeholder="you@email.com"/>
+        </div>
+
+        <div>
+          <label class="label">Address</label>
+          <input required id="address" type="text" placeholder="House, Street, Area"/>
+        </div>
+
+        <div class="two">
+          <div>
+            <label class="label">City</label>
+            <input required id="city" type="text" placeholder="City"/>
+          </div>
+          <div>
+            <label class="label">Pincode</label>
+            <input required id="pincode" type="text" placeholder="Pincode"/>
+          </div>
+        </div>
+
+        <div class="rowline">
+          <label class="check">
+            <input type="checkbox" id="cod" checked />
+            <span>Cash on Delivery</span>
+          </label>
+          <div class="muted small">Online payments can be added later.</div>
+        </div>
+
+        <button class="btn primary full" type="submit">
+          Place Order • <span id="payTotal">₹0</span>
+        </button>
+
+        <small class="muted" id="orderMsg"></small>
+      </form>
     </div>
   </div>
 
   <script src="app.js"></script>
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
 </body>
 </html>
