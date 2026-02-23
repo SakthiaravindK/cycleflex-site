@@ -48,7 +48,6 @@ function updateBadges(){
   const count = cartCount(cart);
   $all("[data-cart-badge]").forEach(b=>b.textContent = String(count));
 }
-updateBadges();
 
 // ============================
 // CART ACTIONS
@@ -338,16 +337,16 @@ ${note || "-"}
 // ============================
 // CONTACT PAGE DIRECT WHATSAPP
 // ============================
-(function(){
+function setupContactWhatsApp(){
   const btn = $("#whatsAppDirect");
   if(!btn) return;
   btn.href = `https://wa.me/91${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello CycleFlex 👋 I need help regarding cycling shorts.")}`;
-})();
+}
 
 // ============================
 // HERO SLIDER (Smooth + Pause + Swipe)
 // ============================
-(function () {
+function setupHeroSlider(){
   const root = document.getElementById("heroSlider");
   if (!root) return;
 
@@ -355,12 +354,13 @@ ${note || "-"}
   const prevBtn = root.querySelector(".slider-btn.prev");
   const nextBtn = root.querySelector(".slider-btn.next");
   const dotsWrap = root.querySelector(".slider-dots");
-  if (!slides.length) return;
+  if (!slides.length || !dotsWrap) return;
 
   let idx = 0;
   let timer = null;
-  const AUTOPLAY_MS = 6000; // ✅ 6s smooth professional (not 2s)
+  const AUTOPLAY_MS = 6000;
 
+  dotsWrap.innerHTML = "";
   slides.forEach((_, i) => {
     const dot = document.createElement("button");
     dot.type = "button";
@@ -414,12 +414,20 @@ ${note || "-"}
 
   render();
   start();
-})();
+}
 
 // ============================
-// INIT RENDERS
+// INIT (DOM READY)
 // ============================
-renderFeatured();
-renderProductsPage();
-renderCheckout();
-updateBadges();
+document.addEventListener("DOMContentLoaded", () => {
+  // year auto fill (works on any page with #year)
+  const y = document.getElementById("year");
+  if (y) y.textContent = new Date().getFullYear();
+
+  updateBadges();
+  renderFeatured();
+  renderProductsPage();
+  renderCheckout();
+  setupContactWhatsApp();
+  setupHeroSlider();
+});
