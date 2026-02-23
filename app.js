@@ -1,585 +1,425 @@
-// ------------------------------
-// DATA
-// ------------------------------
-const products = [
-  {
-    id: "vx-001",
-    name: "Endurance Gel Shorts",
-    price: 1299,
-    rating: 4.7,
-    tag: "gel",
-    stock: "In stock • Ships in 24 hrs",
-    img: "assets/shorts-1.jpg",
-    desc: "High-density gel chamois built for endurance rides. Flatlock seams reduce chafing and irritation.",
-    sizes: ["S","M","L","XL","XXL"]
-  },
-  {
-    id: "vx-002",
-    name: "Bib Shorts Pro",
-    price: 1899,
-    rating: 4.8,
-    tag: "bib",
-    stock: "In stock • Limited pieces",
-    img: "assets/shorts-2.jpg",
-    desc: "Bib strap support keeps everything stable. Breathable panels with strong compression fit.",
-    sizes: ["S","M","L","XL"]
-  },
-  {
-    id: "vx-003",
-    name: "Compression Ride Shorts",
-    price: 1499,
-    rating: 4.6,
-    tag: "compression",
-    stock: "In stock",
-    img: "assets/shorts-3.jpg",
-    desc: "Firm compression support, sweat-wicking fabric, and anti-roll leg grippers for steady rides.",
-    sizes: ["S","M","L","XL","XXL"]
-  },
-  {
-    id: "vx-004",
-    name: "Lightweight Summer Shorts",
-    price: 999,
-    rating: 4.4,
-    tag: "lightweight",
-    stock: "In stock • Best for hot weather",
-    img: "assets/shorts-4.jpg",
-    desc: "Ultra breathable feel for warm climates. Great for daily commuting and short rides.",
-    sizes: ["S","M","L","XL"]
-  }
+// ============================
+// CONFIG
+// ============================
+const WHATSAPP_NUMBER = "9629928542";
+const STORE_ADDRESS =
+  "366/1 G.D Road Kolappalur, Gobichettipalayam, Erode, Tamil Nadu - 638456";
+
+// Products (you can edit names/prices anytime)
+const PRODUCTS = [
+  { id:"w_pro",   name:"Women Pro Cycle Shorts",        category:"Women", price:799, tag:"High-waist", desc:"High-waist compression fit. Breathable, squat-proof fabric." },
+  { id:"w_seam",  name:"Women Seamless Bike Shorts",    category:"Women", price:699, tag:"Seamless",  desc:"Ultra-soft stretch. Everyday training and long rides." },
+  { id:"w_pock",  name:"Women Pocket Cycle Shorts",     category:"Women", price:899, tag:"Pocket",    desc:"Side pockets for phone/keys. Cool-dry performance." },
+  { id:"m_end",   name:"Men Endurance Cycle Shorts",    category:"Men",   price:849, tag:"Endurance", desc:"Supportive compression. Designed for longer rides." },
+  { id:"m_pro",   name:"Men Pro Fit Bike Shorts",       category:"Men",   price:749, tag:"Pro Fit",   desc:"Comfort fit with strong stitching and smooth waistband." },
+  { id:"m_pock",  name:"Men Pocket Cycle Shorts",       category:"Men",   price:949, tag:"Pocket",    desc:"Pocket for essentials. Durable fabric for daily rides." },
 ];
 
-const INR = (n) => `₹${Number(n || 0).toLocaleString("en-IN")}`;
+const STORAGE_KEY = "cycleflex_cart_v1";
 
-// ------------------------------
-// STATE
-// ------------------------------
-let state = {
-  filterTag: "all",
-  sort: "featured",
-  search: "",
-  cart: loadCart(),
-  coupon: null, // { code, percent }
-  theme: loadTheme()
-};
+// ============================
+// HELPERS
+// ============================
+function money(n){
+  return `₹${Number(n||0).toLocaleString("en-IN",{maximumFractionDigits:0})}`;
+}
+function $(sel){ return document.querySelector(sel); }
+function $all(sel){ return Array.from(document.querySelectorAll(sel)); }
 
-let modalState = {
-  product: null,
-  size: null,
-  qty: 1
-};
+function loadCart(){
+  try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); }
+  catch{ return {}; }
+}
+function saveCart(cart){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+  updateBadges();
+}
+function cartCount(cart){
+  return Object.values(cart).reduce((a,b)=>a + (b||0), 0);
+}
+function cartTotal(cart){
+  return Object.entries(cart).reduce((sum,[id,qty])=>{
+    const p = PRODUCTS.find(x=>x.id===id);
+    return sum + (p ? p.price * qty : 0);
+  },0);
+}
+function updateBadges(){
+  const cart = loadCart();
+  const count = cartCount(cart);
+  $all("[data-cart-badge]").forEach(b=>b.textContent = String(count));
+}
+updateBadges();
 
-// ------------------------------
-// ELEMENTS
-// ------------------------------
-const productGrid = document.getElementById("productGrid");
-const searchInput = document.getElementById("searchInput");
-const sortSelect = document.getElementById("sortSelect");
-const tagSelect = document.getElementById("tagSelect");
-
-const productModal = document.getElementById("productModal");
-const modalBackdrop = document.getElementById("modalBackdrop");
-const closeModalBtn = document.getElementById("closeModalBtn");
-const modalImg = document.getElementById("modalImg");
-const modalTitle = document.getElementById("modalTitle");
-const modalRating = document.getElementById("modalRating");
-const modalTag = document.getElementById("modalTag");
-const modalDesc = document.getElementById("modalDesc");
-const modalPrice = document.getElementById("modalPrice");
-const modalStock = document.getElementById("modalStock");
-const sizeButtons = document.getElementById("sizeButtons");
-const qtyInput = document.getElementById("qtyInput");
-const qtyMinus = document.getElementById("qtyMinus");
-const qtyPlus = document.getElementById("qtyPlus");
-const addToCartBtn = document.getElementById("addToCartBtn");
-
-const cartDrawer = document.getElementById("cartDrawer");
-const openCartBtn = document.getElementById("openCartBtn");
-const closeCartBtn = document.getElementById("closeCartBtn");
-const drawerBackdrop = document.getElementById("drawerBackdrop");
-const cartItems = document.getElementById("cartItems");
-
-const cartCount = document.getElementById("cartCount");
-const subtotalText = document.getElementById("subtotalText");
-const discountText = document.getElementById("discountText");
-const totalText = document.getElementById("totalText");
-const couponInput = document.getElementById("couponInput");
-const applyCouponBtn = document.getElementById("applyCouponBtn");
-const checkoutBtn = document.getElementById("checkoutBtn");
-
-const checkoutModal = document.getElementById("checkoutModal");
-const checkoutBackdrop = document.getElementById("checkoutBackdrop");
-const closeCheckoutBtn = document.getElementById("closeCheckoutBtn");
-const checkoutForm = document.getElementById("checkoutForm");
-const payTotal = document.getElementById("payTotal");
-const orderMsg = document.getElementById("orderMsg");
-
-const newsletterForm = document.getElementById("newsletterForm");
-const newsletterEmail = document.getElementById("newsletterEmail");
-const newsletterMsg = document.getElementById("newsletterMsg");
-
-const year = document.getElementById("year");
-const themeBtn = document.getElementById("themeBtn");
-const burgerBtn = document.getElementById("burgerBtn");
-const nav = document.getElementById("nav");
-
-// ------------------------------
-// INIT
-// ------------------------------
-year.textContent = new Date().getFullYear();
-applyTheme(state.theme);
-renderProducts();
-renderCart();
-
-// ------------------------------
-// RENDER PRODUCTS
-// ------------------------------
-function getFilteredProducts(){
-  let list = [...products];
-
-  // filter tag
-  if(state.filterTag !== "all"){
-    list = list.filter(p => p.tag === state.filterTag);
-  }
-
-  // search
-  if(state.search.trim()){
-    const q = state.search.toLowerCase();
-    list = list.filter(p =>
-      p.name.toLowerCase().includes(q) ||
-      p.desc.toLowerCase().includes(q) ||
-      p.tag.toLowerCase().includes(q)
-    );
-  }
-
-  // sort
-  if(state.sort === "priceLow") list.sort((a,b) => a.price - b.price);
-  if(state.sort === "priceHigh") list.sort((a,b) => b.price - a.price);
-  if(state.sort === "ratingHigh") list.sort((a,b) => b.rating - a.rating);
-
-  return list;
+// ============================
+// CART ACTIONS
+// ============================
+function addToCart(id, qty=1){
+  const cart = loadCart();
+  cart[id] = (cart[id]||0) + qty;
+  if(cart[id] <= 0) delete cart[id];
+  saveCart(cart);
+}
+function setQty(id, qty){
+  const cart = loadCart();
+  if(qty <= 0) delete cart[id];
+  else cart[id] = qty;
+  saveCart(cart);
+}
+function clearCart(){
+  localStorage.removeItem(STORAGE_KEY);
+  updateBadges();
 }
 
-function renderProducts(){
-  const list = getFilteredProducts();
+// ============================
+// RENDER: FEATURED (Home)
+// ============================
+function renderFeatured(){
+  const grid = $("#featuredGrid");
+  if(!grid) return;
 
-  if(!list.length){
-    productGrid.innerHTML = `<div class="muted">No products found. Try another search.</div>`;
-    return;
-  }
-
-  productGrid.innerHTML = list.map(p => `
-    <article class="card">
-      <div class="img">
-        <img src="${p.img}" alt="${escapeHtml(p.name)}"/>
-      </div>
-      <div class="body">
-        <h3>${escapeHtml(p.name)}</h3>
-        <div class="meta">
-          <div class="stars">${stars(p.rating)}</div>
-          <div class="tag">${escapeHtml(p.tag.toUpperCase())}</div>
+  const featured = PRODUCTS.slice(0, 4);
+  grid.innerHTML = featured.map(p => `
+    <div class="card">
+      <div class="thumb">${p.category.toUpperCase()} • ${p.tag}</div>
+      <div class="card-body">
+        <div class="row">
+          <div class="tag">${p.category}</div>
+          <div class="price">${money(p.price)}</div>
         </div>
-        <div style="height:10px"></div>
-        <div class="meta">
-          <div class="price">${INR(p.price)}</div>
-          <div class="muted small">${p.stock}</div>
+        <h3>${p.name}</h3>
+        <div class="muted">${p.desc}</div>
+        <div class="card-actions">
+          <button class="btn" type="button" data-view="${p.id}">View</button>
+          <button class="btn primary" type="button" data-add="${p.id}">Add</button>
         </div>
       </div>
-      <div class="actions">
-        <button class="btn ghost" data-view="${p.id}">View</button>
-        <button class="btn primary" data-quick="${p.id}">Quick Add</button>
+    </div>
+  `).join("");
+
+  grid.addEventListener("click", (e)=>{
+    const add = e.target.closest("[data-add]");
+    const view = e.target.closest("[data-view]");
+    if(add) addToCart(add.getAttribute("data-add"), 1);
+    if(view) openModal(view.getAttribute("data-view"));
+  });
+}
+
+// ============================
+// RENDER: PRODUCTS PAGE
+// ============================
+function renderProductsPage(){
+  const grid = $("#productsGrid");
+  if(!grid) return;
+
+  const searchInput = $("#searchInput");
+  const categorySelect = $("#categorySelect");
+  const sortSelect = $("#sortSelect");
+  const resultCount = $("#resultCount");
+
+  function apply(){
+    const q = (searchInput?.value || "").trim().toLowerCase();
+    const cat = categorySelect?.value || "All";
+    const sort = sortSelect?.value || "featured";
+
+    let list = PRODUCTS.slice();
+
+    if(cat !== "All"){
+      list = list.filter(p => p.category === cat);
+    }
+    if(q){
+      list = list.filter(p =>
+        p.name.toLowerCase().includes(q) ||
+        p.tag.toLowerCase().includes(q) ||
+        p.desc.toLowerCase().includes(q)
+      );
+    }
+
+    if(sort === "price_low") list.sort((a,b)=>a.price-b.price);
+    if(sort === "price_high") list.sort((a,b)=>b.price-a.price);
+
+    if(resultCount) resultCount.textContent = `${list.length} products`;
+
+    grid.innerHTML = list.map(p => `
+      <div class="card">
+        <div class="thumb">${p.category.toUpperCase()} • ${p.tag}</div>
+        <div class="card-body">
+          <div class="row">
+            <div class="tag">${p.category}</div>
+            <div class="price">${money(p.price)}</div>
+          </div>
+          <h3>${p.name}</h3>
+          <div class="muted">${p.desc}</div>
+          <div class="card-actions">
+            <button class="btn" type="button" data-view="${p.id}">View</button>
+            <button class="btn primary" type="button" data-add="${p.id}">Add</button>
+          </div>
+        </div>
       </div>
-    </article>
-  `).join("");
+    `).join("");
+  }
 
-  // bind buttons
-  productGrid.querySelectorAll("[data-view]").forEach(btn=>{
-    btn.addEventListener("click", () => openProduct(btn.dataset.view));
-  });
-  productGrid.querySelectorAll("[data-quick]").forEach(btn=>{
-    btn.addEventListener("click", () => quickAdd(btn.dataset.quick));
-  });
-}
-
-function stars(rating){
-  const full = Math.floor(rating);
-  const half = (rating - full) >= 0.5 ? 1 : 0;
-  const empty = 5 - full - half;
-  return "★".repeat(full) + (half ? "☆" : "") + "✩".repeat(empty);
-}
-
-// ------------------------------
-// PRODUCT MODAL
-// ------------------------------
-function openProduct(id){
-  const p = products.find(x => x.id === id);
-  if(!p) return;
-
-  modalState.product = p;
-  modalState.size = p.sizes.includes("M") ? "M" : p.sizes[0];
-  modalState.qty = 1;
-
-  modalImg.src = p.img;
-  modalTitle.textContent = p.name;
-  modalRating.textContent = stars(p.rating);
-  modalTag.textContent = `• ${p.tag.toUpperCase()}`;
-  modalDesc.textContent = p.desc;
-  modalPrice.textContent = INR(p.price);
-  modalStock.textContent = p.stock;
-
-  qtyInput.value = modalState.qty;
-
-  sizeButtons.innerHTML = p.sizes.map(s => `
-    <button class="size-btn ${s === modalState.size ? "active" : ""}" data-size="${s}">
-      ${s}
-    </button>
-  `).join("");
-
-  sizeButtons.querySelectorAll("[data-size]").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      modalState.size = btn.dataset.size;
-      sizeButtons.querySelectorAll(".size-btn").forEach(b=>b.classList.remove("active"));
-      btn.classList.add("active");
-    });
+  grid.addEventListener("click", (e)=>{
+    const add = e.target.closest("[data-add]");
+    const view = e.target.closest("[data-view]");
+    if(add) addToCart(add.getAttribute("data-add"), 1);
+    if(view) openModal(view.getAttribute("data-view"));
   });
 
-  showModal(productModal);
+  [searchInput, categorySelect, sortSelect].forEach(el=>{
+    el && el.addEventListener("input", apply);
+    el && el.addEventListener("change", apply);
+  });
+
+  apply();
 }
 
-function closeProduct(){
-  hideModal(productModal);
-}
+// ============================
+// MODAL
+// ============================
+function openModal(productId){
+  const modal = $("#modal");
+  const body = $("#modalBody");
+  if(!modal || !body) return;
 
-qtyMinus.addEventListener("click", ()=>{
-  modalState.qty = Math.max(1, Number(qtyInput.value || 1) - 1);
-  qtyInput.value = modalState.qty;
-});
-qtyPlus.addEventListener("click", ()=>{
-  modalState.qty = Math.min(99, Number(qtyInput.value || 1) + 1);
-  qtyInput.value = modalState.qty;
-});
-qtyInput.addEventListener("input", ()=>{
-  let v = Number(qtyInput.value || 1);
-  if(!Number.isFinite(v) || v < 1) v = 1;
-  if(v > 99) v = 99;
-  modalState.qty = v;
-  qtyInput.value = v;
-});
-
-addToCartBtn.addEventListener("click", ()=>{
-  const p = modalState.product;
-  if(!p) return;
-  addToCart(p.id, modalState.size, modalState.qty);
-  closeProduct();
-  openCart();
-});
-
-closeModalBtn.addEventListener("click", closeProduct);
-modalBackdrop.addEventListener("click", closeProduct);
-
-// ------------------------------
-// CART
-// ------------------------------
-function cartKey(pid, size){ return `${pid}__${size}`; }
-
-function addToCart(productId, size, qty){
-  const p = products.find(x => x.id === productId);
+  const p = PRODUCTS.find(x=>x.id===productId);
   if(!p) return;
 
-  const key = cartKey(productId, size);
-  const existing = state.cart[key];
+  body.innerHTML = `
+    <div class="row" style="align-items:flex-start">
+      <div>
+        <h3 style="margin:0">${p.name}</h3>
+        <div class="muted">${p.category} • ${p.tag}</div>
+      </div>
+      <div class="price">${money(p.price)}</div>
+    </div>
+    <div class="line"></div>
+    <div class="muted" style="font-size:14px">${p.desc}</div>
+    <div class="line"></div>
+    <div class="row" style="gap:10px">
+      <button class="btn" type="button" id="closeModalBtn">Close</button>
+      <button class="btn primary" type="button" id="addModalBtn">Add to Cart</button>
+    </div>
+  `;
 
-  state.cart[key] = {
-    productId,
-    size,
-    qty: (existing?.qty || 0) + qty
+  modal.classList.add("show");
+
+  $("#closeModalBtn").onclick = ()=>modal.classList.remove("show");
+  $("#addModalBtn").onclick = ()=>{
+    addToCart(p.id, 1);
+    modal.classList.remove("show");
   };
 
-  saveCart();
-  renderCart();
+  modal.addEventListener("click", (e)=>{
+    if(e.target === modal) modal.classList.remove("show");
+  }, { once:true });
 }
 
-function quickAdd(productId){
-  const p = products.find(x => x.id === productId);
-  if(!p) return;
-  const defaultSize = p.sizes.includes("M") ? "M" : p.sizes[0];
-  addToCart(productId, defaultSize, 1);
-  openCart();
-}
+// ============================
+// CHECKOUT PAGE
+// ============================
+function renderCheckout(){
+  const list = $("#cartList");
+  const totalEl = $("#cartTotal");
+  const clearBtn = $("#clearCartBtn");
+  const checkoutBtn = $("#checkoutBtn");
+  if(!list || !totalEl) return;
 
-function removeFromCart(key){
-  delete state.cart[key];
-  saveCart();
-  renderCart();
-}
+  function draw(){
+    const cart = loadCart();
+    const items = Object.entries(cart).map(([id,qty])=>{
+      const p = PRODUCTS.find(x=>x.id===id);
+      return p ? { ...p, qty } : null;
+    }).filter(Boolean);
 
-function updateQty(key, delta){
-  const item = state.cart[key];
-  if(!item) return;
+    if(items.length === 0){
+      list.innerHTML = `<div class="muted">Your cart is empty. Go to <a href="products.html" style="text-decoration:underline">Shop</a>.</div>`;
+      totalEl.textContent = money(0);
+      return;
+    }
 
-  item.qty = Math.max(1, item.qty + delta);
-  saveCart();
-  renderCart();
-}
-
-function renderCart(){
-  const keys = Object.keys(state.cart);
-  cartCount.textContent = keys.reduce((acc,k)=>acc + state.cart[k].qty, 0);
-
-  if(!keys.length){
-    cartItems.innerHTML = `
-      <div class="muted">Your cart is empty. Add a pair and start riding 🚴‍♂️</div>
-    `;
-    setTotals(0,0);
-    return;
-  }
-
-  cartItems.innerHTML = keys.map(key=>{
-    const item = state.cart[key];
-    const p = products.find(x => x.id === item.productId);
-    if(!p) return "";
-
-    return `
+    list.innerHTML = items.map(it=>`
       <div class="cart-item">
-        <img src="${p.img}" alt="${escapeHtml(p.name)}"/>
         <div>
-          <div class="row">
-            <h4>${escapeHtml(p.name)}</h4>
-            <strong>${INR(p.price * item.qty)}</strong>
+          <div style="font-weight:900">${it.name}</div>
+          <div class="muted">${it.category} • ${it.tag}</div>
+          <div class="muted">${money(it.price)} each</div>
+        </div>
+        <div style="text-align:right">
+          <div class="qty">
+            <button class="btn" type="button" data-dec="${it.id}">-</button>
+            <div style="min-width:22px;text-align:center;font-weight:900">${it.qty}</div>
+            <button class="btn" type="button" data-inc="${it.id}">+</button>
           </div>
-          <div class="muted small">Size: ${item.size} • ${INR(p.price)} each</div>
-
-          <div class="cart-actions">
-            <button data-minus="${key}">−</button>
-            <span class="muted">Qty: <strong>${item.qty}</strong></span>
-            <button data-plus="${key}">+</button>
-            <button data-remove="${key}" style="margin-left:auto;">Remove</button>
-          </div>
+          <div class="muted" style="margin-top:6px">Subtotal: <b>${money(it.price * it.qty)}</b></div>
+          <button class="btn" type="button" data-remove="${it.id}" style="margin-top:8px;width:100%;justify-content:center">Remove</button>
         </div>
       </div>
-    `;
-  }).join("");
+    `).join("");
 
-  // bind actions
-  cartItems.querySelectorAll("[data-minus]").forEach(b=>{
-    b.addEventListener("click", ()=>updateQty(b.dataset.minus, -1));
+    totalEl.textContent = money(cartTotal(cart));
+  }
+
+  list.addEventListener("click", (e)=>{
+    const inc = e.target.closest("[data-inc]");
+    const dec = e.target.closest("[data-dec]");
+    const rem = e.target.closest("[data-remove]");
+    const cart = loadCart();
+
+    if(inc){
+      const id = inc.getAttribute("data-inc");
+      addToCart(id, 1);
+      draw();
+    }
+    if(dec){
+      const id = dec.getAttribute("data-dec");
+      const qty = (cart[id]||0) - 1;
+      setQty(id, qty);
+      draw();
+    }
+    if(rem){
+      const id = rem.getAttribute("data-remove");
+      setQty(id, 0);
+      draw();
+    }
   });
-  cartItems.querySelectorAll("[data-plus]").forEach(b=>{
-    b.addEventListener("click", ()=>updateQty(b.dataset.plus, +1));
+
+  clearBtn && (clearBtn.onclick = ()=>{
+    clearCart();
+    draw();
   });
-  cartItems.querySelectorAll("[data-remove]").forEach(b=>{
-    b.addEventListener("click", ()=>removeFromCart(b.dataset.remove));
+
+  checkoutBtn && (checkoutBtn.onclick = ()=>{
+    const cart = loadCart();
+    const items = Object.entries(cart).map(([id,qty])=>{
+      const p = PRODUCTS.find(x=>x.id===id);
+      return p ? `• ${p.name} (Qty: ${qty}) — ${money(p.price*qty)}` : null;
+    }).filter(Boolean);
+
+    if(items.length === 0){
+      alert("Your cart is empty. Please add products first.");
+      return;
+    }
+
+    const name = ($("#c_name")?.value || "").trim();
+    const phone = ($("#c_phone")?.value || "").trim();
+    const address = ($("#c_address")?.value || "").trim();
+    const note = ($("#c_note")?.value || "").trim();
+
+    const total = money(cartTotal(cart));
+
+    const msg =
+`Hello CycleFlex 👋
+I want to place an order.
+
+🛒 Order Items:
+${items.join("\n")}
+
+💰 Total: ${total}
+
+👤 Customer:
+Name: ${name || "-"}
+Phone: ${phone || "-"}
+
+📍 Delivery Address:
+${address || "-"}
+
+📝 Note:
+${note || "-"}
+
+(Website order)`;
+
+    const url = `https://wa.me/91${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+    window.open(url, "_blank");
   });
 
-  // totals
-  const subtotal = keys.reduce((acc,key)=>{
-    const item = state.cart[key];
-    const p = products.find(x => x.id === item.productId);
-    return acc + (p ? p.price * item.qty : 0);
-  }, 0);
-
-  const discount = computeDiscount(subtotal);
-  setTotals(subtotal, discount);
+  draw();
 }
 
-function computeDiscount(subtotal){
-  if(!state.coupon) return 0;
-  return Math.round(subtotal * (state.coupon.percent / 100));
-}
+// ============================
+// CONTACT PAGE DIRECT WHATSAPP
+// ============================
+(function(){
+  const btn = $("#whatsAppDirect");
+  if(!btn) return;
+  btn.href = `https://wa.me/91${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello CycleFlex 👋 I need help regarding cycling shorts.")}`;
+})();
 
-function setTotals(subtotal, discount){
-  const total = Math.max(0, subtotal - discount);
-  subtotalText.textContent = INR(subtotal);
-  discountText.textContent = `- ${INR(discount)}`;
-  totalText.textContent = INR(total);
-  payTotal.textContent = INR(total);
-}
+// ============================
+// HERO SLIDER (Smooth + Pause + Swipe)
+// ============================
+(function () {
+  const root = document.getElementById("heroSlider");
+  if (!root) return;
 
-applyCouponBtn.addEventListener("click", ()=>{
-  const code = (couponInput.value || "").trim().toUpperCase();
-  if(!code){
-    state.coupon = null;
-    renderCart();
-    alert("Enter a coupon code (try RIDE10).");
-    return;
+  const slides = Array.from(root.querySelectorAll(".slide"));
+  const prevBtn = root.querySelector(".slider-btn.prev");
+  const nextBtn = root.querySelector(".slider-btn.next");
+  const dotsWrap = root.querySelector(".slider-dots");
+  if (!slides.length) return;
+
+  let idx = 0;
+  let timer = null;
+  const AUTOPLAY_MS = 6000; // ✅ 6s smooth professional (not 2s)
+
+  slides.forEach((_, i) => {
+    const dot = document.createElement("button");
+    dot.type = "button";
+    dot.className = "slider-dot" + (i === 0 ? " active" : "");
+    dot.setAttribute("aria-label", `Go to slide ${i + 1}`);
+    dot.addEventListener("click", () => goTo(i, true));
+    dotsWrap.appendChild(dot);
+  });
+  const dots = Array.from(dotsWrap.querySelectorAll(".slider-dot"));
+
+  function render() {
+    slides.forEach((s, i) => s.classList.toggle("active", i === idx));
+    dots.forEach((d, i) => d.classList.toggle("active", i === idx));
   }
-
-  // Demo coupons
-  if(code === "RIDE10"){
-    state.coupon = { code, percent: 10 };
-    alert("Coupon applied: 10% off ✅");
-  } else if(code === "VELOX15"){
-    state.coupon = { code, percent: 15 };
-    alert("Coupon applied: 15% off ✅");
-  } else {
-    state.coupon = null;
-    alert("Invalid coupon ❌ Try RIDE10");
+  function goTo(i, userAction = false) {
+    idx = (i + slides.length) % slides.length;
+    render();
+    if (userAction) restart();
   }
-  renderCart();
-});
+  function next() { goTo(idx + 1); }
+  function prev() { goTo(idx - 1); }
 
-openCartBtn.addEventListener("click", openCart);
-closeCartBtn.addEventListener("click", closeCart);
-drawerBackdrop.addEventListener("click", closeCart);
-
-// ------------------------------
-// CHECKOUT
-// ------------------------------
-checkoutBtn.addEventListener("click", ()=>{
-  const keys = Object.keys(state.cart);
-  if(!keys.length){
-    alert("Your cart is empty.");
-    return;
+  function start() {
+    stop();
+    timer = setInterval(next, AUTOPLAY_MS);
   }
-  showModal(checkoutModal);
-});
-
-closeCheckoutBtn.addEventListener("click", ()=>hideModal(checkoutModal));
-checkoutBackdrop.addEventListener("click", ()=>hideModal(checkoutModal));
-
-checkoutForm.addEventListener("submit", (e)=>{
-  e.preventDefault();
-
-  const phone = document.getElementById("phone").value.trim();
-  const pincode = document.getElementById("pincode").value.trim();
-
-  if(!/^\d{10}$/.test(phone)){
-    orderMsg.textContent = "Please enter a valid 10-digit phone number.";
-    return;
+  function stop() {
+    if (timer) clearInterval(timer);
+    timer = null;
   }
-  if(!/^\d{6}$/.test(pincode)){
-    orderMsg.textContent = "Please enter a valid 6-digit pincode.";
-    return;
-  }
+  function restart() { start(); }
 
-  orderMsg.textContent = "Order placed ✅ (Demo). We will contact you soon.";
-  // Clear cart in demo
-  state.cart = {};
-  state.coupon = null;
-  saveCart();
-  renderCart();
+  nextBtn?.addEventListener("click", () => goTo(idx + 1, true));
+  prevBtn?.addEventListener("click", () => goTo(idx - 1, true));
 
-  setTimeout(()=>{
-    hideModal(checkoutModal);
-    closeCart();
-    checkoutForm.reset();
-    orderMsg.textContent = "";
-  }, 1200);
-});
+  root.addEventListener("mouseenter", stop);
+  root.addEventListener("mouseleave", start);
 
-// ------------------------------
-// UI EVENTS (Search/Sort/Filter)
-// ------------------------------
-searchInput.addEventListener("input", ()=>{
-  state.search = searchInput.value;
-  renderProducts();
-});
+  let x0 = null;
+  root.addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; }, { passive:true });
+  root.addEventListener("touchend", (e) => {
+    if (x0 == null) return;
+    const x1 = e.changedTouches[0].clientX;
+    const dx = x1 - x0;
+    if (Math.abs(dx) > 45) {
+      if (dx < 0) goTo(idx + 1, true);
+      else goTo(idx - 1, true);
+    }
+    x0 = null;
+  }, { passive:true });
 
-sortSelect.addEventListener("change", ()=>{
-  state.sort = sortSelect.value;
-  renderProducts();
-});
+  render();
+  start();
+})();
 
-tagSelect.addEventListener("change", ()=>{
-  state.filterTag = tagSelect.value;
-  renderProducts();
-});
-
-// ------------------------------
-// NAV MOBILE
-// ------------------------------
-burgerBtn.addEventListener("click", ()=>{
-  const isOpen = nav.style.display === "flex";
-  nav.style.display = isOpen ? "none" : "flex";
-  nav.style.flexDirection = "column";
-  nav.style.gap = "10px";
-  nav.style.background = "rgba(0,0,0,.25)";
-  nav.style.padding = "12px";
-  nav.style.border = "1px solid var(--line)";
-  nav.style.borderRadius = "16px";
-});
-
-// ------------------------------
-// THEME
-// ------------------------------
-themeBtn.addEventListener("click", ()=>{
-  state.theme = (state.theme === "light") ? "dark" : "light";
-  saveTheme(state.theme);
-  applyTheme(state.theme);
-});
-
-function applyTheme(theme){
-  document.documentElement.setAttribute("data-theme", theme);
-  themeBtn.textContent = theme === "light" ? "🌞" : "🌙";
-}
-
-// ------------------------------
-// NEWSLETTER (DEMO)
-// ------------------------------
-newsletterForm.addEventListener("submit", (e)=>{
-  e.preventDefault();
-  const email = newsletterEmail.value.trim();
-  if(!email.includes("@")){
-    newsletterMsg.textContent = "Please enter a valid email.";
-    return;
-  }
-  newsletterMsg.textContent = "Subscribed ✅ (demo)";
-  newsletterEmail.value = "";
-  setTimeout(()=>newsletterMsg.textContent="", 1400);
-});
-
-// ------------------------------
-// MODAL / DRAWER HELPERS
-// ------------------------------
-function showModal(el){
-  el.classList.add("show");
-  el.setAttribute("aria-hidden", "false");
-  document.body.style.overflow = "hidden";
-}
-function hideModal(el){
-  el.classList.remove("show");
-  el.setAttribute("aria-hidden", "true");
-  document.body.style.overflow = "";
-}
-
-function openCart(){
-  cartDrawer.classList.add("show");
-  cartDrawer.setAttribute("aria-hidden","false");
-  document.body.style.overflow = "hidden";
-}
-function closeCart(){
-  cartDrawer.classList.remove("show");
-  cartDrawer.setAttribute("aria-hidden","true");
-  document.body.style.overflow = "";
-}
-
-// ------------------------------
-// STORAGE
-// ------------------------------
-function loadCart(){
-  try{
-    return JSON.parse(localStorage.getItem("velox_cart") || "{}");
-  }catch{
-    return {};
-  }
-}
-function saveCart(){
-  localStorage.setItem("velox_cart", JSON.stringify(state.cart));
-}
-function loadTheme(){
-  return localStorage.getItem("velox_theme") || "dark";
-}
-function saveTheme(t){
-  localStorage.setItem("velox_theme", t);
-}
-
-// ------------------------------
-// UTILS
-// ------------------------------
-function escapeHtml(str){
-  return String(str)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
+// ============================
+// INIT RENDERS
+// ============================
+renderFeatured();
+renderProductsPage();
+renderCheckout();
+updateBadges();
