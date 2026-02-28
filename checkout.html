@@ -24,9 +24,7 @@
 
       <div class="nav-actions">
         <a class="btn" href="products.html">Continue Shopping</a>
-        <a class="btn primary" href="checkout.html">
-          Cart <span class="badge" data-cart-badge>0</span>
-        </a>
+        <a class="btn primary" href="checkout.html">Cart <span class="badge" data-cart-badge>0</span></a>
       </div>
     </div>
   </header>
@@ -35,7 +33,7 @@
     <section class="section-title">
       <div>
         <h2>Your Cart</h2>
-        <p class="muted">Checkout via WhatsApp — fastest and easiest.</p>
+        <p class="muted">Pay Online (Razorpay) or WhatsApp order.</p>
       </div>
       <button class="btn" id="clearCartBtn" type="button">Clear Cart</button>
     </section>
@@ -53,27 +51,26 @@
         <div class="line"></div>
 
         <div class="muted">Customer Details</div>
+        <div class="line"></div>
+
         <div class="form-grid">
           <input class="input" id="c_name" placeholder="Full Name"/>
           <input class="input" id="c_phone" placeholder="Phone Number"/>
           <input class="input" id="c_address" placeholder="Full Address"/>
-          <input class="input" id="c_note" placeholder="Note (optional) e.g., preferred color/size"/>
-        </div>
-
-        <div style="margin-top:14px">
-          <button class="btn primary full" id="checkoutBtn" type="button">
-            Place Order on WhatsApp
-          </button>
-        </div>
-
-        <div class="small" style="margin-top:10px">
-          After clicking, WhatsApp opens with your cart + total + delivery address. Confirm payment & delivery there.
+          <input class="input" id="c_note" placeholder="Note (optional) e.g., size/color"/>
         </div>
 
         <div class="line"></div>
-        <div class="muted">
-          <b>Store WhatsApp:</b> 9629928542<br/>
-          <b>Pickup / Office:</b> 366/1 G.D Road Kolappalur, Gobichettipalayam, Erode, Tamil Nadu - 638456
+
+        <button class="btn primary full" id="payOnlineBtn" type="button">Pay Online (Razorpay)</button>
+        <div class="small" id="payStatus" style="margin-top:10px"></div>
+
+        <div class="line"></div>
+
+        <button class="btn full" id="checkoutWA" type="button">Checkout via WhatsApp</button>
+
+        <div class="small" style="margin-top:10px">
+          Online payment opens Razorpay securely. WhatsApp checkout sends cart details.
         </div>
       </div>
     </section>
