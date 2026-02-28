@@ -8,56 +8,68 @@
 </head>
 <body>
 
-<header class="nav">
-  <div class="container nav-inner">
-    <a class="brand" href="index.html" aria-label="CycleFlex Home">
-      <img src="images/cycleflex_logo_icon_512.png" class="site-logo" alt="CycleFlex Logo">
-      <img src="images/cycleflex_wordmark_1200x300.png" class="site-wordmark" alt="CycleFlex">
-      <span class="badge">Cycling Shorts</span>
-    </a>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">
+        <img src="logo.png" alt="CycleFlex Logo" class="site-logo">
+        <span>CycleFlex</span>
+        <span class="badge">Cycling Shorts</span>
+      </a>
 
-    <nav class="nav-links">
-      <a href="products.html">Shop</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-
-    <div class="nav-actions">
-      <a class="btn" href="checkout.html">Cart <span class="badge" data-cart-badge>0</span></a>
-      <a class="btn primary" href="products.html">Shop</a>
-    </div>
-  </div>
-</header>
-
-<main class="container">
-  <section class="section-title">
-    <div>
-      <h2>Contact</h2>
-      <p class="muted">For bulk orders, custom stitching, or support — message us on WhatsApp.</p>
-    </div>
-  </section>
-
-  <section class="panel">
-    <h3 style="margin-top:0">WhatsApp Support</h3>
-    <p class="muted"><b>WhatsApp:</b> 9629928542</p>
-    <p class="muted"><b>Business Hours:</b> 9 AM – 8 PM</p>
-    <div class="line"></div>
-    <a class="btn primary full" href="https://wa.me/919629928542?text=Hello%20CycleFlex%20%F0%9F%91%8B%20I%20need%20help." target="_blank">
-      Message on WhatsApp
-    </a>
-  </section>
-
-  <footer class="footer">
-    <div class="row">
-      <div>© <span id="year"></span> CycleFlex</div>
-      <div class="row" style="gap:14px">
+      <nav class="nav-links">
         <a href="products.html">Shop</a>
         <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="btn" href="checkout.html">Cart <span class="badge" data-cart-badge>0</span></a>
+        <a class="btn primary" href="products.html">Shop</a>
       </div>
     </div>
-  </footer>
-</main>
+  </header>
 
-<script src="app.js"></script>
+  <main class="container">
+    <section class="section-title">
+      <div>
+        <h2>Contact</h2>
+        <p class="muted">For bulk orders, custom stitching, or support — message us.</p>
+      </div>
+    </section>
+
+    <section class="two-col">
+      <div class="panel">
+        <h3 style="margin-top:0">WhatsApp Support</h3>
+        <p class="muted">Fastest way: Use checkout page for online payment or WhatsApp order.</p>
+        <div class="line"></div>
+        <p class="muted"><b>WhatsApp:</b> 9629928542</p>
+        <p class="muted"><b>Business Hours:</b> 9 AM – 8 PM</p>
+        <p class="muted"><b>Address:</b><br/>366/1 G.D Road Kolappalur,<br/>Gobichettipalayam, Erode,<br/>Tamil Nadu - 638456</p>
+
+        <div class="line"></div>
+        <a class="btn primary full" id="whatsAppDirect" href="#">Message on WhatsApp</a>
+      </div>
+
+      <div class="panel">
+        <h3 style="margin-top:0">Quick Order</h3>
+        <p class="muted">Add products to cart, then checkout to pay online or send order on WhatsApp.</p>
+        <div class="line"></div>
+        <a class="btn full" href="products.html">Go to Shop</a>
+        <a class="btn primary full" href="checkout.html" style="margin-top:10px">Go to Checkout</a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="row">
+        <div>© <span id="year"></span> CycleFlex</div>
+        <div class="row" style="gap:14px">
+          <a href="products.html">Shop</a>
+          <a href="about.html">About</a>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
 </body>
 </html>
