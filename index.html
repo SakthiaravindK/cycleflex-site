@@ -8,129 +8,92 @@
 </head>
 <body>
 
-  <header class="nav">
-    <div class="container nav-inner">
-      <a class="brand" href="index.html" aria-label="CycleFlex Home">
-        <img src="logo.png" alt="CycleFlex Logo" class="site-logo">
-        <span>CycleFlex</span>
-        <span class="badge">Cycling Shorts</span>
-      </a>
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="index.html" aria-label="CycleFlex Home">
+      <img src="images/cycleflex_logo_icon_512.png" class="site-logo" alt="CycleFlex Logo">
+      <img src="images/cycleflex_wordmark_1200x300.png" class="site-wordmark" alt="CycleFlex">
+      <span class="badge">Cycling Shorts</span>
+    </a>
 
-      <nav class="nav-links">
-        <a href="products.html">Shop</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-      </nav>
+    <nav class="nav-links">
+      <a href="products.html">Shop</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
 
-      <div class="nav-actions">
-        <a class="btn" href="checkout.html">Cart <span class="badge" data-cart-badge>0</span></a>
-        <a class="btn primary" href="products.html">Shop Now</a>
+    <div class="nav-actions">
+      <a class="btn" href="checkout.html">Cart <span class="badge" data-cart-badge>0</span></a>
+      <a class="btn primary" href="products.html">Shop Now</a>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <div class="hero-card">
+      <div class="kicker">Performance • Comfort • Style</div>
+      <h1 class="h1">Cycling shorts that feel like a second skin.</h1>
+      <p class="sub">
+        Premium stretch fabric, anti-chafe stitching, and pockets on selected designs.
+        Built for daily rides, gym, and serious training.
+      </p>
+
+      <div class="hero-cta">
+        <a class="btn primary" href="products.html">Explore Collection</a>
+        <a class="btn" href="checkout.html">View Cart</a>
+      </div>
+
+      <div class="pills">
+        <div class="pill">✅ Men & Women</div>
+        <div class="pill">✅ Sizes S–XXL</div>
+        <div class="pill">✅ Online Payment</div>
       </div>
     </div>
-  </header>
 
-  <main class="container">
-    <section class="hero">
-      <div class="hero-card">
-        <div class="kicker">Performance • Comfort • Style</div>
-        <h1 class="h1">Cycling shorts that feel like a second skin.</h1>
-        <p class="sub">
-          Premium stretch fabric, anti-chafe stitching, and pockets on selected designs.
-          Built for daily rides, gym, and serious training.
-        </p>
+    <div class="hero-media" id="heroSlider">
+      <div class="hero-badge">New Drop</div>
 
-        <div class="hero-cta">
-          <a class="btn primary" href="products.html">Explore Collection</a>
-          <a class="btn" href="checkout.html">View Cart</a>
-        </div>
-
-        <div class="pills">
-          <div class="pill">✅ Men & Women</div>
-          <div class="pill">✅ Sizes S–XXL</div>
-          <div class="pill">✅ Online Payment</div>
-        </div>
+      <div class="slider" aria-label="CycleFlex slider">
+        <img class="slide active" src="images/slide1.png" alt="slide 1">
+        <img class="slide" src="images/slide2.png" alt="slide 2">
+        <img class="slide" src="images/slide3.png" alt="slide 3">
+        <img class="slide" src="images/slide4.png" alt="slide 4">
+        <img class="slide" src="images/slide5.png" alt="slide 5">
       </div>
 
-      <div class="hero-media" id="heroSlider">
-        <div class="hero-badge">New Drop</div>
+      <button class="slider-btn prev" type="button" aria-label="Previous slide">‹</button>
+      <button class="slider-btn next" type="button" aria-label="Next slide">›</button>
+      <div class="slider-dots" aria-label="Slider dots"></div>
 
-        <div class="slider" aria-label="CycleFlex slider">
-          <img class="slide active" src="images/slide1.png" alt="CycleFlex slide 1">
-          <img class="slide" src="images/slide2.png" alt="CycleFlex slide 2">
-          <img class="slide" src="images/slide3.png" alt="CycleFlex slide 3">
-          <img class="slide" src="images/slide4.png" alt="CycleFlex slide 4">
-          <img class="slide" src="images/slide5.png" alt="CycleFlex slide 5">
-        </div>
-
-        <button class="slider-btn prev" type="button" aria-label="Previous slide">‹</button>
-        <button class="slider-btn next" type="button" aria-label="Next slide">›</button>
-        <div class="slider-dots" aria-label="Slider dots"></div>
-
-        <div class="hero-caption">
-          Breathable • Quick Dry • Comfort Fit • Durable Stitching
-        </div>
+      <div class="hero-caption">
+        Breathable • Quick Dry • Comfort Fit • Durable Stitching
       </div>
+    </div>
+  </section>
 
-      <!-- ✅ Chatbot -->
-      <div class="cf-chat" id="cfChat">
-        <button class="cf-chat-btn" id="cfChatOpen" aria-label="Open chat">💬 <span>Chat</span></button>
+  <section class="section-title">
+    <div>
+      <h2>Featured Picks</h2>
+      <p class="muted">Top-selling shorts — add to cart and checkout.</p>
+    </div>
+    <a class="btn" href="products.html">View All</a>
+  </section>
 
-        <div class="cf-chat-window" id="cfChatWindow" aria-hidden="true">
-          <div class="cf-chat-head">
-            <div class="cf-chat-title">
-              <div class="cf-dot"></div>
-              <div>
-                <div class="cf-chat-name">CycleFlex Support</div>
-                <div class="cf-chat-sub">Usually replies in a minute</div>
-              </div>
-            </div>
-            <button class="cf-chat-close btn" id="cfChatClose" aria-label="Close chat">✕</button>
-          </div>
+  <section class="grid" id="featuredGrid"></section>
 
-          <div class="cf-chat-body" id="cfChatBody"></div>
-
-          <div class="cf-chat-quick">
-            <button class="cf-chip" data-chip="Price">Pricing</button>
-            <button class="cf-chip" data-chip="Size">Size help</button>
-            <button class="cf-chip" data-chip="Order">How to order</button>
-            <button class="cf-chip" data-chip="Delivery">Delivery</button>
-          </div>
-
-          <form class="cf-chat-form" id="cfChatForm">
-            <input class="cf-chat-input" id="cfChatInput" placeholder="Type a message…" autocomplete="off"/>
-            <button class="cf-chat-send" type="submit">Send</button>
-          </form>
-
-          <div class="cf-chat-foot">
-            <button class="cf-chat-wa" id="cfChatWA" type="button">Continue on WhatsApp</button>
-          </div>
-        </div>
+  <footer class="footer">
+    <div class="row">
+      <div>© <span id="year"></span> CycleFlex. All rights reserved.</div>
+      <div class="row" style="gap:14px">
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="products.html">Shop</a>
       </div>
+    </div>
+  </footer>
+</main>
 
-    </section>
-
-    <section class="section-title">
-      <div>
-        <h2>Featured Picks</h2>
-        <p class="muted">Top-selling cycling shorts — quick add to cart and checkout.</p>
-      </div>
-      <a class="btn" href="products.html">View All</a>
-    </section>
-
-    <section class="grid" id="featuredGrid"></section>
-
-    <footer class="footer">
-      <div class="row">
-        <div>© <span id="year"></span> CycleFlex. All rights reserved.</div>
-        <div class="row" style="gap:14px">
-          <a href="about.html">About</a>
-          <a href="contact.html">Contact</a>
-          <a href="products.html">Shop</a>
-        </div>
-      </div>
-    </footer>
-  </main>
-
-  <script src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
