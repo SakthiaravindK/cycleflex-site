@@ -2,8 +2,10 @@
 // CONFIG
 // ============================
 const WHATSAPP_NUMBER = "9629928542";
+const STORE_ADDRESS =
+  "366/1 G.D Road Kolappalur, Gobichettipalayam, Erode, Tamil Nadu - 638456";
 
-// ✅ Backend URL (local). After deploy, set to your live server URL.
+// ✅ Your backend URL (change after deploy)
 const API_BASE = "http://localhost:5050";
 
 // Products
@@ -224,7 +226,7 @@ function renderProductsPage(){
 }
 
 // ============================
-// CHECKOUT PAGE (WhatsApp + Razorpay Payment)
+// CHECKOUT PAGE (WhatsApp + Online Payment)
 // ============================
 function renderCheckout(){
   const list = $("#cartList");
@@ -285,9 +287,12 @@ function renderCheckout(){
     if(rem){ setQty(rem.getAttribute("data-remove"), 0); draw(); }
   });
 
-  clearBtn && (clearBtn.onclick = ()=>{ clearCart(); draw(); });
+  clearBtn && (clearBtn.onclick = ()=>{
+    clearCart();
+    draw();
+  });
 
-  // WhatsApp checkout
+  // ✅ WhatsApp checkout
   waCheckoutBtn && (waCheckoutBtn.onclick = ()=>{
     const cart = loadCart();
     const items = Object.entries(cart).map(([id,qty])=>{
@@ -327,7 +332,7 @@ ${note || "-"}
     window.open(`https://wa.me/91${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
   });
 
-  // Online payment (Razorpay)
+  // ✅ Online payment (Razorpay)
   payOnlineBtn && (payOnlineBtn.onclick = async ()=>{
     const cart = loadCart();
     const total = cartTotal(cart);
@@ -343,6 +348,7 @@ ${note || "-"}
     try{
       payStatus && (payStatus.textContent = "Creating payment…");
 
+      // create order on backend
       const res = await fetch(`${API_BASE}/create-order`, {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
@@ -351,6 +357,7 @@ ${note || "-"}
       const data = await res.json();
       if(!res.ok) throw new Error(data?.error || "Order create failed");
 
+      // load Razorpay script if not loaded
       await loadRazorpayScript();
 
       const options = {
@@ -360,13 +367,22 @@ ${note || "-"}
         name: "CycleFlex",
         description: "Cycling Shorts Order",
         order_id: data.order_id,
-        prefill: { name: customer.name || "", contact: customer.phone || "" },
+        prefill: {
+          name: customer.name || "",
+          contact: customer.phone || "",
+        },
+        notes: {
+          address: customer.address || "",
+          store_address: STORE_ADDRESS
+        },
         handler: async function (response){
+          // verify payment on backend
           payStatus && (payStatus.textContent = "Verifying payment…");
           const vr = await fetch(`${API_BASE}/verify-payment`, {
             method:"POST",
             headers:{ "Content-Type":"application/json" },
             body: JSON.stringify({
+              cart, customer,
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature
@@ -376,16 +392,20 @@ ${note || "-"}
           if(!vr.ok) throw new Error(vdata?.error || "Verification failed");
 
           payStatus && (payStatus.textContent = "✅ Payment successful! Order confirmed.");
+
+          // optional: clear cart after successful payment
           clearCart();
           draw();
 
-          // optional WhatsApp confirmation
+          // open WhatsApp with payment info (optional)
           const msg =
 `Hello CycleFlex 👋
 I have paid online (Razorpay).
 
 ✅ Payment ID: ${response.razorpay_payment_id}
 ✅ Order ID: ${response.razorpay_order_id}
+
+Please confirm delivery.
 
 Customer:
 Name: ${customer.name || "-"}
@@ -412,6 +432,7 @@ ${customer.address || "-"}`;
   draw();
 }
 
+// Razorpay script loader
 function loadRazorpayScript(){
   return new Promise((resolve, reject)=>{
     if(window.Razorpay) return resolve();
@@ -424,7 +445,16 @@ function loadRazorpayScript(){
 }
 
 // ============================
-// HERO SLIDER
+// CONTACT PAGE DIRECT WHATSAPP
+// ============================
+function setupContactWhatsApp(){
+  const btn = $("#whatsAppDirect");
+  if(!btn) return;
+  btn.href = `https://wa.me/91${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello CycleFlex 👋 I need help regarding cycling shorts.")}`;
+}
+
+// ============================
+// HERO SLIDER (Smooth + Pause + Swipe)
 // ============================
 function setupHeroSlider(){
   const root = document.getElementById("heroSlider");
@@ -462,8 +492,15 @@ function setupHeroSlider(){
   }
   function next() { goTo(idx + 1); }
   function prev() { goTo(idx - 1); }
-  function start() { stop(); timer = setInterval(next, AUTOPLAY_MS); }
-  function stop() { if (timer) clearInterval(timer); timer = null; }
+
+  function start() {
+    stop();
+    timer = setInterval(next, AUTOPLAY_MS);
+  }
+  function stop() {
+    if (timer) clearInterval(timer);
+    timer = null;
+  }
   function restart() { start(); }
 
   nextBtn?.addEventListener("click", () => goTo(idx + 1, true));
@@ -490,6 +527,68 @@ function setupHeroSlider(){
 }
 
 // ============================
+// CHATBOT
+// ============================
+function setupChatBot(){
+  const openBtn = document.getElementById("cfChatOpen");
+  const closeBtn = document.getElementById("cfChatClose");
+  const win = document.getElementById("cfChatWindow");
+  const body = document.getElementById("cfChatBody");
+  const form = document.getElementById("cfChatForm");
+  const input = document.getElementById("cfChatInput");
+  const waBtn = document.getElementById("cfChatWA");
+  if(!openBtn || !closeBtn || !win || !body || !form || !input || !waBtn) return;
+
+  function addMsg(text, who){
+    const div = document.createElement("div");
+    div.className = "cf-msg " + who;
+    div.textContent = text;
+    body.appendChild(div);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function botReply(text){
+    const t = text.toLowerCase();
+    if(t.includes("price")){
+      addMsg("Our shorts start from ₹699 to ₹949 depending on model.", "bot");
+    } else if(t.includes("size")){
+      addMsg("Sizes available from S to XXL. Share your waist size in inches.", "bot");
+    } else if(t.includes("order")){
+      addMsg("Add product to cart and checkout. You can pay online or via WhatsApp.", "bot");
+    } else if(t.includes("delivery")){
+      addMsg("Delivery usually takes 3–5 days.", "bot");
+    } else {
+      addMsg("Hi 👋 How can I help you today? (Price / Size / Order / Delivery)", "bot");
+    }
+  }
+
+  openBtn.onclick = () => win.classList.add("show");
+  closeBtn.onclick = () => win.classList.remove("show");
+
+  form.addEventListener("submit", e=>{
+    e.preventDefault();
+    const text = input.value.trim();
+    if(!text) return;
+    addMsg(text,"user");
+    input.value="";
+    setTimeout(()=>botReply(text),300);
+  });
+
+  document.querySelectorAll(".cf-chip").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const text = btn.getAttribute("data-chip") || "";
+      addMsg(text, "user");
+      setTimeout(()=>botReply(text), 200);
+    });
+  });
+
+  waBtn.onclick = ()=>{
+    const url = `https://wa.me/91${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello CycleFlex 👋 I need help.")}`;
+    window.open(url,"_blank");
+  };
+}
+
+// ============================
 // INIT
 // ============================
 document.addEventListener("DOMContentLoaded", () => {
@@ -500,5 +599,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderFeatured();
   renderProductsPage();
   renderCheckout();
+  setupContactWhatsApp();
   setupHeroSlider();
+  setupChatBot();
 });
