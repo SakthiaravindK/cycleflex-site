@@ -8,85 +8,84 @@
 </head>
 <body>
 
-<header class="nav">
-  <div class="container nav-inner">
-    <a class="brand" href="index.html" aria-label="CycleFlex Home">
-      <img src="images/cycleflex_logo_icon_512.png" class="site-logo" alt="CycleFlex Logo">
-      <img src="images/cycleflex_wordmark_1200x300.png" class="site-wordmark" alt="CycleFlex">
-      <span class="badge">Cycling Shorts</span>
-    </a>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">
+        <img src="logo.png" alt="CycleFlex Logo" class="site-logo">
+        <span>CycleFlex</span>
+        <span class="badge">Cycling Shorts</span>
+      </a>
 
-    <nav class="nav-links">
-      <a href="products.html">Shop</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-
-    <div class="nav-actions">
-      <a class="btn" href="products.html">Continue Shopping</a>
-      <a class="btn primary" href="checkout.html">Cart <span class="badge" data-cart-badge>0</span></a>
-    </div>
-  </div>
-</header>
-
-<main class="container">
-  <section class="section-title">
-    <div>
-      <h2>Your Cart</h2>
-      <p class="muted">Pay Online (Razorpay) or WhatsApp order.</p>
-    </div>
-    <button class="btn" id="clearCartBtn" type="button">Clear Cart</button>
-  </section>
-
-  <section class="two-col">
-    <div class="panel">
-      <div id="cartList"></div>
-    </div>
-
-    <div class="panel">
-      <div class="row">
-        <div style="font-weight:900;font-size:18px">Total</div>
-        <div style="font-weight:900;font-size:18px" id="cartTotal">₹0</div>
-      </div>
-
-      <div class="line"></div>
-
-      <div class="muted">Customer Details</div>
-      <div class="line"></div>
-
-      <div class="form-grid">
-        <input class="input" id="c_name" placeholder="Full Name"/>
-        <input class="input" id="c_phone" placeholder="Phone Number"/>
-        <input class="input" id="c_address" placeholder="Full Address"/>
-        <input class="input" id="c_note" placeholder="Note (optional) e.g., size/color"/>
-      </div>
-
-      <div class="line"></div>
-
-      <button class="btn primary full" id="payOnlineBtn" type="button">Pay Online (Razorpay)</button>
-      <div class="small" id="payStatus" style="margin-top:10px"></div>
-
-      <div class="line"></div>
-
-      <button class="btn full" id="checkoutWA" type="button">Checkout via WhatsApp</button>
-
-      <div class="small" style="margin-top:10px">
-        Online payment opens Razorpay securely. WhatsApp checkout sends cart details.
-      </div>
-    </div>
-  </section>
-
-  <footer class="footer">
-    <div class="row">
-      <div>© <span id="year"></span> CycleFlex</div>
-      <div class="row" style="gap:14px">
+      <nav class="nav-links">
         <a href="products.html">Shop</a>
-        <a href="contact.html">Support</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="btn" href="products.html">Continue Shopping</a>
+        <a class="btn primary" href="checkout.html">Cart <span class="badge" data-cart-badge>0</span></a>
       </div>
     </div>
-  </footer>
-</main>
+  </header>
 
-<script src="app.js"></script>
+  <main class="container">
+    <section class="section-title">
+      <div>
+        <h2>Your Cart</h2>
+        <p class="muted">Pay Online (Razorpay) or WhatsApp order.</p>
+      </div>
+      <button class="btn" id="clearCartBtn" type="button">Clear Cart</button>
+    </section>
+
+    <section class="two-col">
+      <div class="panel">
+        <div id="cartList"></div>
+      </div>
+
+      <div class="panel">
+        <div class="row">
+          <div style="font-weight:900;font-size:18px">Total</div>
+          <div style="font-weight:900;font-size:18px" id="cartTotal">₹0</div>
+        </div>
+        <div class="line"></div>
+
+        <div class="muted">Customer Details</div>
+        <div class="line"></div>
+
+        <div class="form-grid">
+          <input class="input" id="c_name" placeholder="Full Name"/>
+          <input class="input" id="c_phone" placeholder="Phone Number"/>
+          <input class="input" id="c_address" placeholder="Full Address"/>
+          <input class="input" id="c_note" placeholder="Note (optional) e.g., size/color"/>
+        </div>
+
+        <div class="line"></div>
+
+        <button class="btn primary full" id="payOnlineBtn" type="button">Pay Online (Razorpay)</button>
+        <div class="small" id="payStatus" style="margin-top:10px"></div>
+
+        <div class="line"></div>
+
+        <button class="btn full" id="checkoutWA" type="button">Checkout via WhatsApp</button>
+
+        <div class="small" style="margin-top:10px">
+          Online payment opens Razorpay securely. WhatsApp checkout sends cart details.
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="row">
+        <div>© <span id="year"></span> CycleFlex</div>
+        <div class="row" style="gap:14px">
+          <a href="products.html">Shop</a>
+          <a href="contact.html">Support</a>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
 </body>
 </html>
