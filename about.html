@@ -8,81 +8,73 @@
 </head>
 <body>
 
-  <header class="nav">
-    <div class="container nav-inner">
-      <a class="brand" href="index.html">
-        <img src="logo.png" alt="CycleFlex Logo" class="site-logo">
-        <span>CycleFlex</span>
-        <span class="badge">Cycling Shorts</span>
-      </a>
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="index.html" aria-label="CycleFlex Home">
+      <img src="images/cycleflex_logo_icon_512.png" class="site-logo" alt="CycleFlex Logo">
+      <img src="images/cycleflex_wordmark_1200x300.png" class="site-wordmark" alt="CycleFlex">
+      <span class="badge">Cycling Shorts</span>
+    </a>
 
-      <nav class="nav-links">
-        <a href="products.html">Shop</a>
-        <a href="about.html">About</a>
+    <nav class="nav-links">
+      <a href="products.html">Shop</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <div class="nav-actions">
+      <a class="btn" href="checkout.html">Cart <span class="badge" data-cart-badge>0</span></a>
+      <a class="btn primary" href="products.html">Shop</a>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <section class="section-title">
+    <div>
+      <h2>About CycleFlex</h2>
+      <p class="muted">Premium cycling shorts for comfort, performance, and daily use.</p>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h3 style="margin-top:0">Who we are</h3>
+    <p class="muted">
+      CycleFlex is a local stitching brand from Tamil Nadu focused on making high-quality cycling shorts for men and women.
+      Our goal: <b>better fit, stronger stitching, breathable fabric</b>, and long-lasting comfort.
+    </p>
+
+    <div class="line"></div>
+
+    <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="card"><div class="card-body">
+        <h3>Quality Stitching</h3>
+        <div class="muted">Reinforced seams + anti-chafe stitching made for daily rides.</div>
+      </div></div>
+
+      <div class="card"><div class="card-body">
+        <h3>Comfort Fit</h3>
+        <div class="muted">Soft waistband + stretch support so it feels like a second skin.</div>
+      </div></div>
+
+      <div class="card"><div class="card-body">
+        <h3>Made for India</h3>
+        <div class="muted">Designed for Indian weather and real customer needs.</div>
+      </div></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="row">
+      <div>© <span id="year"></span> CycleFlex</div>
+      <div class="row" style="gap:14px">
         <a href="contact.html">Contact</a>
-      </nav>
-
-      <div class="nav-actions">
-        <a class="btn" href="checkout.html">Cart <span class="badge" data-cart-badge>0</span></a>
-        <a class="btn primary" href="products.html">Shop</a>
+        <a href="products.html">Shop</a>
       </div>
     </div>
-  </header>
+  </footer>
+</main>
 
-  <main class="container">
-    <section class="section-title">
-      <div>
-        <h2>About CycleFlex</h2>
-        <p class="muted">We stitch premium cycling shorts for comfort, performance, and daily use.</p>
-      </div>
-    </section>
-
-    <section class="panel">
-      <h3 style="margin-top:0">Who we are</h3>
-      <p class="muted">
-        CycleFlex is a local stitching brand from Tamil Nadu focused on making high-quality cycling shorts for men and women.
-        Our goal is simple: <b>better fit, stronger stitching, breathable fabric</b>, and long-lasting comfort.
-      </p>
-
-      <div class="line"></div>
-
-      <div class="grid" style="grid-template-columns:repeat(3,1fr)">
-        <div class="card"><div class="card-body">
-          <h3>Quality Stitching</h3>
-          <div class="muted">Reinforced seams + anti-chafe stitching made for daily rides.</div>
-        </div></div>
-
-        <div class="card"><div class="card-body">
-          <h3>Comfort Fit</h3>
-          <div class="muted">Soft waistband + stretch support so it feels like a second skin.</div>
-        </div></div>
-
-        <div class="card"><div class="card-body">
-          <h3>Made for India</h3>
-          <div class="muted">Designed for Indian weather and real customer needs.</div>
-        </div></div>
-      </div>
-
-      <div class="line"></div>
-
-      <h3>Store & Support</h3>
-      <p class="muted">
-        <b>WhatsApp:</b> 9629928542<br/>
-        <b>Address:</b> 366/1 G.D Road Kolappalur, Gobichettipalayam, Erode, Tamil Nadu - 638456
-      </p>
-    </section>
-
-    <footer class="footer">
-      <div class="row">
-        <div>© <span id="year"></span> CycleFlex</div>
-        <div class="row" style="gap:14px">
-          <a href="contact.html">Contact</a>
-          <a href="products.html">Shop</a>
-        </div>
-      </div>
-    </footer>
-  </main>
-
-  <script src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
