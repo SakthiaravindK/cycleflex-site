@@ -8,71 +8,71 @@
 </head>
 <body>
 
-  <header class="nav">
-    <div class="container nav-inner">
-      <a class="brand" href="index.html">
-        <img src="logo.png" alt="CycleFlex Logo" class="site-logo">
-        <span>CycleFlex</span>
-        <span class="badge">Cycling Shorts</span>
-      </a>
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="index.html" aria-label="CycleFlex Home">
+      <img src="images/cycleflex_logo_icon_512.png" class="site-logo" alt="CycleFlex Logo">
+      <img src="images/cycleflex_wordmark_1200x300.png" class="site-wordmark" alt="CycleFlex">
+      <span class="badge">Cycling Shorts</span>
+    </a>
 
-      <nav class="nav-links">
-        <a href="products.html">Shop</a>
-        <a href="about.html">About</a>
+    <nav class="nav-links">
+      <a href="products.html">Shop</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <div class="nav-actions">
+      <a class="btn" href="checkout.html">Cart <span class="badge" data-cart-badge>0</span></a>
+      <a class="btn primary" href="checkout.html">Checkout</a>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <section class="section-title">
+    <div>
+      <h2>Shop Cycling Shorts</h2>
+      <p id="resultCount" class="muted">Products</p>
+    </div>
+    <a class="btn" href="index.html">← Back</a>
+  </section>
+
+  <section class="filters">
+    <input class="input" id="searchInput" placeholder="Search (pocket, seamless, endurance...)"/>
+    <select id="categorySelect">
+      <option value="All">All</option>
+      <option value="Women">Women</option>
+      <option value="Men">Men</option>
+    </select>
+    <select id="sortSelect">
+      <option value="featured">Featured</option>
+      <option value="price_low">Price: Low to High</option>
+      <option value="price_high">Price: High to Low</option>
+    </select>
+  </section>
+
+  <section class="grid" id="productsGrid"></section>
+
+  <div id="modal" class="modal">
+    <div class="modal-wrap">
+      <div class="card">
+        <div class="card-body" id="modalBody"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="row">
+      <div>Checkout supports WhatsApp + Online Payment.</div>
+      <div class="row" style="gap:14px">
+        <a href="checkout.html">Cart</a>
         <a href="contact.html">Contact</a>
-      </nav>
-
-      <div class="nav-actions">
-        <a class="btn" href="checkout.html">Cart <span class="badge" data-cart-badge>0</span></a>
-        <a class="btn primary" href="checkout.html">Checkout</a>
       </div>
     </div>
-  </header>
+  </footer>
+</main>
 
-  <main class="container">
-    <section class="section-title">
-      <div>
-        <h2>Shop Cycling Shorts</h2>
-        <p id="resultCount" class="muted">Products</p>
-      </div>
-      <a class="btn" href="index.html">← Back</a>
-    </section>
-
-    <section class="filters">
-      <input class="input" id="searchInput" placeholder="Search (pocket, seamless, endurance...)"/>
-      <select id="categorySelect">
-        <option value="All">All</option>
-        <option value="Women">Women</option>
-        <option value="Men">Men</option>
-      </select>
-      <select id="sortSelect">
-        <option value="featured">Featured</option>
-        <option value="price_low">Price: Low to High</option>
-        <option value="price_high">Price: High to Low</option>
-      </select>
-    </section>
-
-    <section class="grid" id="productsGrid"></section>
-
-    <div id="modal" class="modal">
-      <div class="modal-wrap">
-        <div class="card">
-          <div class="card-body" id="modalBody"></div>
-        </div>
-      </div>
-    </div>
-
-    <footer class="footer">
-      <div class="row">
-        <div>Need help? Checkout supports WhatsApp and Online Payment.</div>
-        <div class="row" style="gap:14px">
-          <a href="checkout.html">Cart</a>
-          <a href="contact.html">Contact</a>
-        </div>
-      </div>
-    </footer>
-  </main>
-
-  <script src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
