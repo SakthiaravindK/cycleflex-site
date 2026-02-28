@@ -5,65 +5,27 @@ const WHATSAPP_NUMBER = "9629928542";
 const STORE_ADDRESS =
   "366/1 G.D Road Kolappalur, Gobichettipalayam, Erode, Tamil Nadu - 638456";
 
-// Products (you can edit names/prices anytime)
+// ✅ Your backend URL (change after deploy)
+const API_BASE = "http://localhost:5050";
+
+// Products
 const PRODUCTS = [
-  { id:"w_pro",   name:"Women Pro Cycle Shorts",        category:"Women", price:799, tag:"High-waist", desc:"High-waist compression fit. Breathable, squat-proof fabric." },
-  { id:"w_seam",  name:"Women Seamless Bike Shorts",    category:"Women", price:699, tag:"Seamless",  desc:"Ultra-soft stretch. Everyday training and long rides." },
-  { id:"w_pock",  name:"Women Pocket Cycle Shorts",     category:"Women", price:899, tag:"Pocket",    desc:"Side pockets for phone/keys. Cool-dry performance." },
-  { id:"m_end",   name:"Men Endurance Cycle Shorts",    category:"Men",   price:849, tag:"Endurance", desc:"Supportive compression. Designed for longer rides." },
-  { id:"m_pro",   name:"Men Pro Fit Bike Shorts",       category:"Men",   price:749, tag:"Pro Fit",   desc:"Comfort fit with strong stitching and smooth waistband." },
-  { id:"m_pock",  name:"Men Pocket Cycle Shorts",       category:"Men",   price:949, tag:"Pocket",    desc:"Pocket for essentials. Durable fabric for daily rides." },
+  { id:"w_pro",  name:"Women Pro Cycle Shorts",     category:"Women", price:799, tag:"High-waist",
+    desc:"High-waist compression fit. Breathable, squat-proof fabric.", img:"images/slide1.png" },
+  { id:"w_seam", name:"Women Seamless Bike Shorts", category:"Women", price:699, tag:"Seamless",
+    desc:"Ultra-soft stretch. Everyday training and long rides.", img:"images/slide2.png" },
+  { id:"w_pock", name:"Women Pocket Cycle Shorts",  category:"Women", price:899, tag:"Pocket",
+    desc:"Side pockets for phone/keys. Cool-dry performance.", img:"images/slide3.png" },
+  { id:"m_end",  name:"Men Endurance Cycle Shorts", category:"Men",   price:849, tag:"Endurance",
+    desc:"Supportive compression. Designed for longer rides.", img:"images/slide4.png" },
+  { id:"m_pro",  name:"Men Pro Fit Bike Shorts",    category:"Men",   price:749, tag:"Pro Fit",
+    desc:"Comfort fit with strong stitching and smooth waistband.", img:"images/slide5.png" },
+  { id:"m_pock", name:"Men Pocket Cycle Shorts",    category:"Men",   price:949, tag:"Pocket",
+    desc:"Pocket for essentials. Durable fabric for daily rides.", img:"images/slide1.png" },
 ];
 
 const STORAGE_KEY = "cycleflex_cart_v1";
-// CHATBOT FUNCTIONALITY
-const openBtn = document.getElementById("cfChatOpen");
-const closeBtn = document.getElementById("cfChatClose");
-const win = document.getElementById("cfChatWindow");
-const body = document.getElementById("cfChatBody");
-const form = document.getElementById("cfChatForm");
-const input = document.getElementById("cfChatInput");
-const waBtn = document.getElementById("cfChatWA");
 
-function addMsg(text, who){
-  const div = document.createElement("div");
-  div.className = "cf-msg " + who;
-  div.textContent = text;
-  body.appendChild(div);
-  body.scrollTop = body.scrollHeight;
-}
-
-function botReply(text){
-  const t = text.toLowerCase();
-  if(t.includes("price")){
-    addMsg("Our shorts start from ₹699 to ₹899 depending on model.", "bot");
-  } else if(t.includes("size")){
-    addMsg("Sizes available from S to XXL. Share your waist size.", "bot");
-  } else if(t.includes("order")){
-    addMsg("Add product to cart and click Checkout → WhatsApp.", "bot");
-  } else if(t.includes("delivery")){
-    addMsg("Delivery usually takes 3-5 days.", "bot");
-  } else {
-    addMsg("Hi 👋 How can I help you today?", "bot");
-  }
-}
-
-openBtn.onclick = () => win.classList.add("show");
-closeBtn.onclick = () => win.classList.remove("show");
-
-form.addEventListener("submit", e=>{
-  e.preventDefault();
-  const text = input.value.trim();
-  if(!text) return;
-  addMsg(text,"user");
-  input.value="";
-  setTimeout(()=>botReply(text),300);
-});
-
-waBtn.onclick = ()=>{
-  const url = "https://wa.me/919629928542?text=Hello%20CycleFlex%20I%20need%20help";
-  window.open(url,"_blank");
-};
 // ============================
 // HELPERS
 // ============================
@@ -117,109 +79,6 @@ function clearCart(){
 }
 
 // ============================
-// RENDER: FEATURED (Home)
-// ============================
-function renderFeatured(){
-  const grid = $("#featuredGrid");
-  if(!grid) return;
-
-  const featured = PRODUCTS.slice(0, 4);
-  grid.innerHTML = featured.map(p => `
-    <div class="card">
-      <div class="thumb">${p.category.toUpperCase()} • ${p.tag}</div>
-      <div class="card-body">
-        <div class="row">
-          <div class="tag">${p.category}</div>
-          <div class="price">${money(p.price)}</div>
-        </div>
-        <h3>${p.name}</h3>
-        <div class="muted">${p.desc}</div>
-        <div class="card-actions">
-          <button class="btn" type="button" data-view="${p.id}">View</button>
-          <button class="btn primary" type="button" data-add="${p.id}">Add</button>
-        </div>
-      </div>
-    </div>
-  `).join("");
-
-  grid.addEventListener("click", (e)=>{
-    const add = e.target.closest("[data-add]");
-    const view = e.target.closest("[data-view]");
-    if(add) addToCart(add.getAttribute("data-add"), 1);
-    if(view) openModal(view.getAttribute("data-view"));
-  });
-}
-
-// ============================
-// RENDER: PRODUCTS PAGE
-// ============================
-function renderProductsPage(){
-  const grid = $("#productsGrid");
-  if(!grid) return;
-
-  const searchInput = $("#searchInput");
-  const categorySelect = $("#categorySelect");
-  const sortSelect = $("#sortSelect");
-  const resultCount = $("#resultCount");
-
-  function apply(){
-    const q = (searchInput?.value || "").trim().toLowerCase();
-    const cat = categorySelect?.value || "All";
-    const sort = sortSelect?.value || "featured";
-
-    let list = PRODUCTS.slice();
-
-    if(cat !== "All"){
-      list = list.filter(p => p.category === cat);
-    }
-    if(q){
-      list = list.filter(p =>
-        p.name.toLowerCase().includes(q) ||
-        p.tag.toLowerCase().includes(q) ||
-        p.desc.toLowerCase().includes(q)
-      );
-    }
-
-    if(sort === "price_low") list.sort((a,b)=>a.price-b.price);
-    if(sort === "price_high") list.sort((a,b)=>b.price-a.price);
-
-    if(resultCount) resultCount.textContent = `${list.length} products`;
-
-    grid.innerHTML = list.map(p => `
-      <div class="card">
-        <div class="thumb">${p.category.toUpperCase()} • ${p.tag}</div>
-        <div class="card-body">
-          <div class="row">
-            <div class="tag">${p.category}</div>
-            <div class="price">${money(p.price)}</div>
-          </div>
-          <h3>${p.name}</h3>
-          <div class="muted">${p.desc}</div>
-          <div class="card-actions">
-            <button class="btn" type="button" data-view="${p.id}">View</button>
-            <button class="btn primary" type="button" data-add="${p.id}">Add</button>
-          </div>
-        </div>
-      </div>
-    `).join("");
-  }
-
-  grid.addEventListener("click", (e)=>{
-    const add = e.target.closest("[data-add]");
-    const view = e.target.closest("[data-view]");
-    if(add) addToCart(add.getAttribute("data-add"), 1);
-    if(view) openModal(view.getAttribute("data-view"));
-  });
-
-  [searchInput, categorySelect, sortSelect].forEach(el=>{
-    el && el.addEventListener("input", apply);
-    el && el.addEventListener("change", apply);
-  });
-
-  apply();
-}
-
-// ============================
 // MODAL
 // ============================
 function openModal(productId){
@@ -261,13 +120,121 @@ function openModal(productId){
 }
 
 // ============================
-// CHECKOUT PAGE
+// RENDER: FEATURED (Home)
+// ============================
+function renderFeatured(){
+  const grid = $("#featuredGrid");
+  if(!grid) return;
+
+  const featured = PRODUCTS.slice(0, 4);
+  grid.innerHTML = featured.map(p => `
+    <div class="card">
+      <div class="thumb">
+        <img src="${p.img}" alt="${p.name}">
+        <div class="pbadge">${p.tag}</div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="tag">${p.category}</div>
+          <div class="price">${money(p.price)}</div>
+        </div>
+        <h3 style="margin:10px 0 6px">${p.name}</h3>
+        <div class="muted">${p.desc}</div>
+        <div class="card-actions">
+          <button class="btn" type="button" data-view="${p.id}">View</button>
+          <button class="btn primary" type="button" data-add="${p.id}">Add</button>
+        </div>
+      </div>
+    </div>
+  `).join("");
+
+  grid.addEventListener("click", (e)=>{
+    const add = e.target.closest("[data-add]");
+    const view = e.target.closest("[data-view]");
+    if(add) addToCart(add.getAttribute("data-add"), 1);
+    if(view) openModal(view.getAttribute("data-view"));
+  });
+}
+
+// ============================
+// RENDER: PRODUCTS PAGE
+// ============================
+function renderProductsPage(){
+  const grid = $("#productsGrid");
+  if(!grid) return;
+
+  const searchInput = $("#searchInput");
+  const categorySelect = $("#categorySelect");
+  const sortSelect = $("#sortSelect");
+  const resultCount = $("#resultCount");
+
+  function apply(){
+    const q = (searchInput?.value || "").trim().toLowerCase();
+    const cat = categorySelect?.value || "All";
+    const sort = sortSelect?.value || "featured";
+
+    let list = PRODUCTS.slice();
+
+    if(cat !== "All") list = list.filter(p => p.category === cat);
+    if(q){
+      list = list.filter(p =>
+        p.name.toLowerCase().includes(q) ||
+        p.tag.toLowerCase().includes(q) ||
+        p.desc.toLowerCase().includes(q)
+      );
+    }
+    if(sort === "price_low") list.sort((a,b)=>a.price-b.price);
+    if(sort === "price_high") list.sort((a,b)=>b.price-a.price);
+
+    if(resultCount) resultCount.textContent = `${list.length} products`;
+
+    grid.innerHTML = list.map(p => `
+      <div class="card">
+        <div class="thumb">
+          <img src="${p.img}" alt="${p.name}">
+          <div class="pbadge">${p.tag}</div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="tag">${p.category}</div>
+            <div class="price">${money(p.price)}</div>
+          </div>
+          <h3 style="margin:10px 0 6px">${p.name}</h3>
+          <div class="muted">${p.desc}</div>
+          <div class="card-actions">
+            <button class="btn" type="button" data-view="${p.id}">View</button>
+            <button class="btn primary" type="button" data-add="${p.id}">Add</button>
+          </div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  grid.addEventListener("click", (e)=>{
+    const add = e.target.closest("[data-add]");
+    const view = e.target.closest("[data-view]");
+    if(add) addToCart(add.getAttribute("data-add"), 1);
+    if(view) openModal(view.getAttribute("data-view"));
+  });
+
+  [searchInput, categorySelect, sortSelect].forEach(el=>{
+    el && el.addEventListener("input", apply);
+    el && el.addEventListener("change", apply);
+  });
+
+  apply();
+}
+
+// ============================
+// CHECKOUT PAGE (WhatsApp + Online Payment)
 // ============================
 function renderCheckout(){
   const list = $("#cartList");
   const totalEl = $("#cartTotal");
   const clearBtn = $("#clearCartBtn");
-  const checkoutBtn = $("#checkoutBtn");
+  const waCheckoutBtn = $("#checkoutWA");
+  const payOnlineBtn = $("#payOnlineBtn");
+  const payStatus = $("#payStatus");
   if(!list || !totalEl) return;
 
   function draw(){
@@ -311,22 +278,13 @@ function renderCheckout(){
     const rem = e.target.closest("[data-remove]");
     const cart = loadCart();
 
-    if(inc){
-      const id = inc.getAttribute("data-inc");
-      addToCart(id, 1);
-      draw();
-    }
+    if(inc){ addToCart(inc.getAttribute("data-inc"), 1); draw(); }
     if(dec){
       const id = dec.getAttribute("data-dec");
-      const qty = (cart[id]||0) - 1;
-      setQty(id, qty);
+      setQty(id, (cart[id]||0) - 1);
       draw();
     }
-    if(rem){
-      const id = rem.getAttribute("data-remove");
-      setQty(id, 0);
-      draw();
-    }
+    if(rem){ setQty(rem.getAttribute("data-remove"), 0); draw(); }
   });
 
   clearBtn && (clearBtn.onclick = ()=>{
@@ -334,28 +292,25 @@ function renderCheckout(){
     draw();
   });
 
-  checkoutBtn && (checkoutBtn.onclick = ()=>{
+  // ✅ WhatsApp checkout
+  waCheckoutBtn && (waCheckoutBtn.onclick = ()=>{
     const cart = loadCart();
     const items = Object.entries(cart).map(([id,qty])=>{
       const p = PRODUCTS.find(x=>x.id===id);
       return p ? `• ${p.name} (Qty: ${qty}) — ${money(p.price*qty)}` : null;
     }).filter(Boolean);
 
-    if(items.length === 0){
-      alert("Your cart is empty. Please add products first.");
-      return;
-    }
+    if(items.length === 0){ alert("Your cart is empty."); return; }
 
     const name = ($("#c_name")?.value || "").trim();
     const phone = ($("#c_phone")?.value || "").trim();
     const address = ($("#c_address")?.value || "").trim();
     const note = ($("#c_note")?.value || "").trim();
-
     const total = money(cartTotal(cart));
 
     const msg =
 `Hello CycleFlex 👋
-I want to place an order.
+I want to place an order (WhatsApp).
 
 🛒 Order Items:
 ${items.join("\n")}
@@ -374,11 +329,119 @@ ${note || "-"}
 
 (Website order)`;
 
-    const url = `https://wa.me/91${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
-    window.open(url, "_blank");
+    window.open(`https://wa.me/91${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
+  });
+
+  // ✅ Online payment (Razorpay)
+  payOnlineBtn && (payOnlineBtn.onclick = async ()=>{
+    const cart = loadCart();
+    const total = cartTotal(cart);
+    if(total <= 0){ alert("Your cart is empty."); return; }
+
+    const customer = {
+      name: ($("#c_name")?.value || "").trim(),
+      phone: ($("#c_phone")?.value || "").trim(),
+      address: ($("#c_address")?.value || "").trim(),
+      note: ($("#c_note")?.value || "").trim(),
+    };
+
+    try{
+      payStatus && (payStatus.textContent = "Creating payment…");
+
+      // create order on backend
+      const res = await fetch(`${API_BASE}/create-order`, {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({ cart, customer })
+      });
+      const data = await res.json();
+      if(!res.ok) throw new Error(data?.error || "Order create failed");
+
+      // load Razorpay script if not loaded
+      await loadRazorpayScript();
+
+      const options = {
+        key: data.key_id,
+        amount: data.amount,
+        currency: data.currency,
+        name: "CycleFlex",
+        description: "Cycling Shorts Order",
+        order_id: data.order_id,
+        prefill: {
+          name: customer.name || "",
+          contact: customer.phone || "",
+        },
+        notes: {
+          address: customer.address || "",
+          store_address: STORE_ADDRESS
+        },
+        handler: async function (response){
+          // verify payment on backend
+          payStatus && (payStatus.textContent = "Verifying payment…");
+          const vr = await fetch(`${API_BASE}/verify-payment`, {
+            method:"POST",
+            headers:{ "Content-Type":"application/json" },
+            body: JSON.stringify({
+              cart, customer,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature
+            })
+          });
+          const vdata = await vr.json();
+          if(!vr.ok) throw new Error(vdata?.error || "Verification failed");
+
+          payStatus && (payStatus.textContent = "✅ Payment successful! Order confirmed.");
+
+          // optional: clear cart after successful payment
+          clearCart();
+          draw();
+
+          // open WhatsApp with payment info (optional)
+          const msg =
+`Hello CycleFlex 👋
+I have paid online (Razorpay).
+
+✅ Payment ID: ${response.razorpay_payment_id}
+✅ Order ID: ${response.razorpay_order_id}
+
+Please confirm delivery.
+
+Customer:
+Name: ${customer.name || "-"}
+Phone: ${customer.phone || "-"}
+
+Address:
+${customer.address || "-"}`;
+
+          window.open(`https://wa.me/91${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
+        }
+      };
+
+      payStatus && (payStatus.textContent = "Opening payment…");
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+
+    }catch(err){
+      console.error(err);
+      payStatus && (payStatus.textContent = "❌ Payment failed: " + err.message);
+      alert("Payment failed: " + err.message);
+    }
   });
 
   draw();
+}
+
+// Razorpay script loader
+function loadRazorpayScript(){
+  return new Promise((resolve, reject)=>{
+    if(window.Razorpay) return resolve();
+    const s = document.createElement("script");
+    s.src = "https://checkout.razorpay.com/v1/checkout.js";
+    s.onload = resolve;
+    s.onerror = reject;
+    document.body.appendChild(s);
+  });
 }
 
 // ============================
@@ -464,10 +527,71 @@ function setupHeroSlider(){
 }
 
 // ============================
-// INIT (DOM READY)
+// CHATBOT
+// ============================
+function setupChatBot(){
+  const openBtn = document.getElementById("cfChatOpen");
+  const closeBtn = document.getElementById("cfChatClose");
+  const win = document.getElementById("cfChatWindow");
+  const body = document.getElementById("cfChatBody");
+  const form = document.getElementById("cfChatForm");
+  const input = document.getElementById("cfChatInput");
+  const waBtn = document.getElementById("cfChatWA");
+  if(!openBtn || !closeBtn || !win || !body || !form || !input || !waBtn) return;
+
+  function addMsg(text, who){
+    const div = document.createElement("div");
+    div.className = "cf-msg " + who;
+    div.textContent = text;
+    body.appendChild(div);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function botReply(text){
+    const t = text.toLowerCase();
+    if(t.includes("price")){
+      addMsg("Our shorts start from ₹699 to ₹949 depending on model.", "bot");
+    } else if(t.includes("size")){
+      addMsg("Sizes available from S to XXL. Share your waist size in inches.", "bot");
+    } else if(t.includes("order")){
+      addMsg("Add product to cart and checkout. You can pay online or via WhatsApp.", "bot");
+    } else if(t.includes("delivery")){
+      addMsg("Delivery usually takes 3–5 days.", "bot");
+    } else {
+      addMsg("Hi 👋 How can I help you today? (Price / Size / Order / Delivery)", "bot");
+    }
+  }
+
+  openBtn.onclick = () => win.classList.add("show");
+  closeBtn.onclick = () => win.classList.remove("show");
+
+  form.addEventListener("submit", e=>{
+    e.preventDefault();
+    const text = input.value.trim();
+    if(!text) return;
+    addMsg(text,"user");
+    input.value="";
+    setTimeout(()=>botReply(text),300);
+  });
+
+  document.querySelectorAll(".cf-chip").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const text = btn.getAttribute("data-chip") || "";
+      addMsg(text, "user");
+      setTimeout(()=>botReply(text), 200);
+    });
+  });
+
+  waBtn.onclick = ()=>{
+    const url = `https://wa.me/91${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello CycleFlex 👋 I need help.")}`;
+    window.open(url,"_blank");
+  };
+}
+
+// ============================
+// INIT
 // ============================
 document.addEventListener("DOMContentLoaded", () => {
-  // year auto fill (works on any page with #year)
   const y = document.getElementById("year");
   if (y) y.textContent = new Date().getFullYear();
 
@@ -477,5 +601,5 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCheckout();
   setupContactWhatsApp();
   setupHeroSlider();
+  setupChatBot();
 });
-
